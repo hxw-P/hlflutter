@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hlflutter/custom/hl_view_tool.dart';
 import 'package:hlflutter/custom/hl_toast.dart';
 import 'package:provider/provider.dart';
