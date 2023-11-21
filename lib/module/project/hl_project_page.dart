@@ -96,7 +96,13 @@ class _HLProjectPageState extends State<HLProjectPage> with AutomaticKeepAliveCl
           crossAxisCount: 2,
           itemCount: projects.length,
           itemBuilder: (BuildContext context, int index) => Container(
-            child: HLBusinessView.projectGrid(context, appTheme, index, projects[index]),
+            child: HLBusinessView.projectGrid(context, appTheme, index, projects[index], actionBlock: () {
+              print("projectGrid");
+              Navigator.pushNamed(context, "web_page", arguments: {
+                "url": projects[index].link ?? "",
+                "title": projects[index].title ?? ""
+              });
+            }),
           ),
           staggeredTileBuilder: (int index) => StaggeredTile.count(1, index == 0 ? 1 : 1.5),
           mainAxisSpacing: 8.0,

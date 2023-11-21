@@ -202,6 +202,11 @@ class HLBusinessView {
           ],
         ),
         ),
+      onTap: () {
+        if (actionBlock != null) {
+          actionBlock();
+        }
+      },
       );
   }
 

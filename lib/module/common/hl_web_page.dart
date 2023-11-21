@@ -49,7 +49,7 @@ class _HLWebPageState extends State<HLWebPage> {
             // web加载完成
             isLoading = false;
             // 刷新布局
-            setState(() {});
+            // setState(() {});ß
           },
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
@@ -70,53 +70,18 @@ class _HLWebPageState extends State<HLWebPage> {
       body: Stack(
         children: [
           WebViewWidget(controller: webController),
-          // 老版的webview
-          // WebView(
-          //   // 初始load的url
-          //   // initialUrl: _articleEntity.link,
-          //   initialUrl: "http://172.20.244.251:5500/test1.html",
-          //   // JS执行模式（是否允许JS执行）
-          //   javascriptMode: JavascriptMode.unrestricted,
-          //   // 在WebView创建完成后调用，只会被调用一次
-          //   onWebViewCreated: (WebViewController webViewController) {},
-          //   // 路由委托（可以通过在此处拦截url实现JS调用Flutter部分）
-          //   navigationDelegate: (NavigationRequest request) {
-          //     print("美剧详情中要跳转的url ${request.url}");
-          //     // 禁止路由跳转
-          //     // return NavigationDecision.prevent;
-          //     // 允许路由替换
-          //     return NavigationDecision.navigate;
-          //     // return null;
-          //   },
-          //   // 手势监听
-          //   // gestureRecognizers: ,
-          //   // WebView加载完毕时的回调。import 'dart:async'
-          //   onPageFinished: (String url) {
-          //     // web加载完成
-          //     isLoading = false;
-          //     // 刷新布局
-          //     setState(() {
-          //     });
-          //   },
-          //   // WebView加载出错
-          //   onWebResourceError: (WebResourceError error) {
-          //     print('错误信息：${error.description}');
-          //     print('错误码：${error.errorCode}');
-          //   },
-          // ),
           Positioned(
             top: 0,
             left: 0,
             bottom: 0,
             right: 0,
-            child: isLoading ? Container(
-                child: Align(
-                  child: Platform.isIOS
-                      ? CupertinoActivityIndicator()
-                      : CircularProgressIndicator(
-                      backgroundColor: Colors.orange),
-                  alignment: Alignment(0, -0.2),
-                )) : Container(),
+            child: isLoading ? Align(
+              alignment: const Alignment(0, -0.2),
+              child: Platform.isIOS
+                  ? const CupertinoActivityIndicator()
+                  : const CircularProgressIndicator(
+                  backgroundColor: Colors.orange),
+            ) : Container(),
           )
         ],
       ),
