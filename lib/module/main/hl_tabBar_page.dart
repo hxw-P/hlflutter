@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 // page
 import 'package:hlflutter/module/home/page/hl_home_page.dart';
-import 'package:hlflutter/module/square/hl_square_page.dart';
+import 'package:hlflutter/module/project/hl_project_page.dart';
 import 'package:hlflutter/common/hl_util.dart';
 import 'package:hlflutter/common/hl_app_theme.dart';
 import 'package:provider/provider.dart';
@@ -19,7 +19,7 @@ class _TabBarPageState extends State<TabBarPage> {
   int currentIndex = 0;
   PageController pageController = PageController(initialPage: 0);
   /// 子控制器
-  final pages = [HLHomePage(title: "首页"), HLSquarePage()];
+  final pages = [HLHomePage(title: "首页"), HLProjectPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _TabBarPageState extends State<TabBarPage> {
                               appTheme),
                           createBottomAppBarItem(
                               1,
-                              "广场",
+                              "项目",
                               currentIndex == 1
                                   ? "images/bottom_tabbar/guangchang_sel.png"
                                   : "images/bottom_tabbar/guangchang_nor.png",

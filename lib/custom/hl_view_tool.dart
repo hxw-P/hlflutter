@@ -122,9 +122,9 @@ class HLViewTool {
       height: height,
       width: width,
       child: ListView.builder(
-            shrinkWrap: true,
+            shrinkWrap: true,//是否将列表的尺寸调整为适应内容大小
             padding: EdgeInsets.zero,
-            physics: const NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),//禁止滚动
             itemBuilder: (BuildContext context, int index) {
               return Column(
                 children: [

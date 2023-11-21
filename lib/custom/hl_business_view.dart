@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hlflutter/module/project/entity/hl_project_entity.dart';
 import '../common/hl_app_theme.dart';
 import '../common/hl_util.dart';
 import '../module/home/entity/hl_article_entity.dart';
@@ -173,4 +174,35 @@ class HLBusinessView {
       },
     );
   }
+
+  /// 项目列表cell
+  static projectGrid(BuildContext context,
+      AppTheme appTheme,
+      int index,
+      HLProjectEntity project, {
+        Function? actionBlock,
+      }) {
+    return GestureDetector(
+      child: Container(
+        margin: EdgeInsets.fromLTRB(Util.px(5), Util.px(5), Util.px(5), Util.px(5)),
+        color: Colors.white,
+        child: Stack(
+          children: [
+            Container(
+              child: Image.network(project.envelopePic!, fit: BoxFit.fill),
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                HLViewTool.createText(text: "${project.title}", color: appTheme.titleColor, fontSize: 20, fontWeight: FontWeight.w400),
+                HLViewTool.createText(text: "${project.desc}", color: appTheme.subTitleDarkColor, fontSize: 16, fontWeight: FontWeight.w400, maxLines: 2)
+              ],
+            )
+          ],
+        ),
+        ),
+      );
+  }
+
 }
