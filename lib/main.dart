@@ -11,7 +11,8 @@ import 'module/login/hl_login_page.dart';
 
 void main() {
   final appTheme = AppTheme();
-
+  //功能备注，在run之前，需要调用到一些原生的功能， 比如获取到软件的版本号等，就需确保在run 之前绑定到，才能调用到原生代码。
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MultiProvider(
       providers: [

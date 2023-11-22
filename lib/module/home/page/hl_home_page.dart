@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hlflutter/custom/hl_view_tool.dart';
 import 'package:hlflutter/custom/hl_toast.dart';
@@ -48,6 +49,10 @@ class _HLHomePageState extends State<HLHomePage>
 
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+
+  //平台通道––––跳转到原生
+  static const platform = MethodChannel('com.hl.native');
+
 
   //1.必须with  AutomaticKeepAliveClientMixin;
   //2.实现get wantKeepAlive方法.当前页面需要缓存到的时候返回true,否则返回flase.默认是flase
@@ -139,7 +144,8 @@ class _HLHomePageState extends State<HLHomePage>
               itemHeight: 40,
               actionBlock: (index) {
                 print("fsdfsdsdfsdfsd");
-                Navigator.pop(context);
+                // Navigator.pop(context);
+                jumpToNative();
                 // HLToast.toast(context, msg: popItemList[index]["title"].toString());
               }
             ),
@@ -367,5 +373,11 @@ class _HLHomePageState extends State<HLHomePage>
         });
       });
     });
+  }
+
+  // 跳转原生
+  Future<Null> jumpToNative() async {
+    final String result = await platform.invokeMethod('jumpToNative');
+    print('result===$result');
   }
 }
