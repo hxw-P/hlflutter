@@ -49,7 +49,8 @@ class _HLWebPageState extends State<HLWebPage> {
             // web加载完成
             isLoading = false;
             // 刷新布局
-            // setState(() {});ß
+            // setState(() {});
+            // Provider.of<IndicatorShow>(context).setShow(false);
           },
           onWebResourceError: (WebResourceError error) {},
           onNavigationRequest: (NavigationRequest request) {
@@ -67,25 +68,67 @@ class _HLWebPageState extends State<HLWebPage> {
           title, appTheme, enableBack: true, backAction: () {
         Navigator.of(context).pop();
       }),
-      body: Stack(
-        children: [
-          WebViewWidget(controller: webController),
-          Positioned(
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            child: isLoading ? Align(
-              alignment: const Alignment(0, -0.2),
-              child: Platform.isIOS
-                  ? const CupertinoActivityIndicator()
-                  : const CircularProgressIndicator(
-                  backgroundColor: Colors.orange),
-            ) : Container(),
-          )
-        ],
-      ),
+      body: ChangeNotifierProvider(
+        create: (context) => IndicatorShow(),
+        child: Stack(
+          children: [
+            WebViewWidget(controller: webController),
+            const Positioned(
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              child: IndicatorWidget(),
+            ),
+            Builder(builder: (builderContext) {
+              return GestureDetector(
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  color: Colors.lightBlue,
+                ),
+                onTap: () {
+                  // 这个地方如果使用context，运行时会抛出ProviderNotFoundException，因为此处我们使用的 context 来自于 MyApp，但 Provider 的 element 节点位于 MyApp 的下方，所以 Provider.of(context) 无法获取到 Provider 节点，需要使用通过嵌套 Builder 组件，使用子节点的 context 访问
+                  Provider.of<IndicatorShow>(builderContext, listen: false).setShow(false);
+                  // appTheme的privider的在顶层，所以不会有这个问题
+                  appTheme.updateColors(true);
+                },
+              );
+            }),
+
+          ],
+        ),
+      )
     );
+  }
+
+}
+
+class IndicatorWidget extends StatelessWidget {
+  const IndicatorWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return  Align(
+      alignment: const Alignment(0, -0.2),
+      child: Provider.of<IndicatorShow>(context).isShow
+          ? Platform.isIOS
+          ? const CupertinoActivityIndicator()
+          : const CircularProgressIndicator(
+          backgroundColor: Colors.orange)
+      : Container(),
+    );
+  }
+
+}
+
+class IndicatorShow with ChangeNotifier {
+  
+  var isShow = true;
+  void setShow(bool show) {
+    isShow = show;
+    notifyListeners();
   }
 
 }
