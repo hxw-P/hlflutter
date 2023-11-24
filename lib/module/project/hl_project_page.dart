@@ -120,13 +120,13 @@ class _HLProjectPageState extends State<HLProjectPage> with AutomaticKeepAliveCl
   }
 
   /// 下拉刷新
-  void _onRefresh() async {
+  void _onRefresh() {
     currentPage = 0;
     getProjects();
   }
 
   /// 上拉加载更多
-  void _onLoading() async {
+  void _onLoading() {
     currentPage++;
     getProjects();
   }
@@ -147,7 +147,7 @@ class _HLProjectPageState extends State<HLProjectPage> with AutomaticKeepAliveCl
     // }
   }
 
-  getProjects() async {
+  getProjects() {
     HLHttpClient.getInstance().get("${Api.get_listprojects}$currentPage/json",
         context: context, successCallBack: (data) {
           List responseJson = data["datas"];

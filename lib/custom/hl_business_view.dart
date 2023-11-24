@@ -89,7 +89,8 @@ class HLBusinessView {
                             padding: EdgeInsets.fromLTRB(Util.px(5), 0, 0, 0),
                             width: Util.px(50),
                             child: FadeInImage.assetNetwork(
-                                placeholder: "images/search/faild.png",
+                                placeholder: "images/common/img_placeholder.png",
+                                fit: BoxFit.fitWidth,
                                 image: article.envelopePic!),
                           ),
                           Expanded(
@@ -187,10 +188,12 @@ class HLBusinessView {
         margin: EdgeInsets.fromLTRB(Util.px(5), Util.px(5), Util.px(5), Util.px(5)),
         color: Colors.white,
         child: Stack(
+          fit: StackFit.expand,
+          alignment: Alignment.center,
           children: [
-            Container(
-              child: Image.network(project.envelopePic!, fit: BoxFit.fill),
-            ),
+            FadeInImage.assetNetwork(placeholder: "images/common/img_placeholder.png",
+                fit: BoxFit.fill,
+                image: project.envelopePic!),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,

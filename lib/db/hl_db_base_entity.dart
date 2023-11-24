@@ -7,4 +7,5 @@ abstract class HLDbBaseEntity {
 
   /// 关联表名称
   String getTableName();
+
 }

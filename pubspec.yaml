@@ -54,7 +54,7 @@ dependencies:
   #  path_provider: 1.5.1  #状态管理
   #----->状态管理
   provider: ^6.0.5
-  sqflite: ^2.2.4+1  #数据库
+  sqflite: ^2.3.0  #数据库
   path_provider: ^2.0.1       #路径管理
   image_picker: ^0.8.4+11     #拍照，相册
 
@@ -99,6 +99,7 @@ flutter:
     - images/login/login_btn_chose_nomal.png
     - images/login/login_btn_chose_clicked.png
     - images/common/text-field/clear.png
+    - images/common/img_placeholder.png
     - images/guide/guide_1.png
     - images/guide/guide_2.png
     - images/guide/guide_3.png

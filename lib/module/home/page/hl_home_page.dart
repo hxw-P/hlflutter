@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:hlflutter/common/hl_native_handle.dart';
 import 'package:hlflutter/custom/hl_view_tool.dart';
 import 'package:hlflutter/custom/hl_toast.dart';
+import 'package:hlflutter/db/hl_db_base_entity.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../common/hl_app_theme.dart';
@@ -51,8 +53,6 @@ class _HLHomePageState extends State<HLHomePage>
   final RefreshController _refreshController =
       RefreshController(initialRefresh: false);
 
-
-
   //1.必须with  AutomaticKeepAliveClientMixin;
   //2.实现get wantKeepAlive方法.当前页面需要缓存到的时候返回true,否则返回flase.默认是flase
   @override
@@ -65,12 +65,12 @@ class _HLHomePageState extends State<HLHomePage>
 
     /// addPostFrameCallback是StatefulWidget渲染结束之后的回调，只会调用一次，一般是在initState里添加回调：，
     // WidgetsBinding.instance.addPostFrameCallback((_) {});
-    getArticles();
+    // getArticles();
     getBanners();
   }
 
   /// 下拉刷新
-  void _onRefresh() async {
+  void _onRefresh() {
     // monitor network fetch
     // await Future.delayed(Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
@@ -80,7 +80,7 @@ class _HLHomePageState extends State<HLHomePage>
   }
 
   /// 上拉加载更多
-  void _onLoading() async {
+  void _onLoading() {
     // monitor network fetch
     // await Future.delayed(Duration(milliseconds: 1000));
     // // if failed,use loadFailed(),if no data return,use LoadNodata()
@@ -135,19 +135,18 @@ class _HLHomePageState extends State<HLHomePage>
             //     Navigator.pop(context);
             //   },
             // ),
-            popWidget: HLViewTool.createList(
-              appTheme,
-                popItemList,
-              width: 150,
-              height: 120,
-              itemHeight: 40,
-              actionBlock: (index) {
-                print("fsdfsdsdfsdfsd");
-                // Navigator.pop(context);
-                HLNativeHandle.exchangeWithNative({"action": "push", "router": "/test"});
-                // HLToast.toast(context, msg: popItemList[index]["title"].toString());
-              }
-            ),
+            popWidget: HLViewTool.createList(appTheme, popItemList,
+                width: 150, height: 120, itemHeight: 40, actionBlock: (index) {
+              Navigator.pop(context);
+              HLNativeHandle.exchangeWithNative(
+                  "push",
+                  {
+                    "msg": popItemList[index]["title"].toString(),
+                    "router": "/test"
+                  },
+                  (result) {});
+              // HLToast.toast(context, msg: popItemList[index]["title"].toString());
+            }),
             offset: const Offset(-65, 0),
           );
         })
@@ -303,18 +302,38 @@ class _HLHomePageState extends State<HLHomePage>
   }
 
   ///获取主页文章
-  getArticles() async {
+  getArticles() {
+    // 先显示缓存数据
+    if (currentPage == 0) {
+      HLDBManager.getInstance()?.openDb().then((value) {
+        HLDBManager.getInstance()?.queryItems(HLArticleEntity()).then((value) {
+          if (articles.isEmpty) {
+            articles = value as List<HLArticleEntity>;
+            setState(() {});
+          }
+        });
+      });
+    }
+    // 同时加载在线数据
     HLHttpClient.getInstance().get("${Api.get_articles}$currentPage/json",
         context: context, successCallBack: (data) {
       List responseJson = data["datas"];
-      print("获取主页文章 == $responseJson");
-      List<HLArticleEntity> newArticles = responseJson.map((m) {
-        HLArticleEntity entity = HLArticleEntity.fromJson(m);
-        HLDBManager.getInstance()?.openDb().then((value) {
-          HLDBManager.getInstance()?.insertItem(entity).then((value) {});
+      print("net-get_articles:$responseJson");
+      List<HLArticleEntity> newArticles = [];
+      if (responseJson.isNotEmpty) {
+        // 更新数据库缓存(移除旧数据)
+        HLDBManager.getInstance()?.deleteItem(HLArticleEntity()).then((value) {
+          // 处理文章数据map->model
+          newArticles = responseJson.map((m) {
+            HLArticleEntity entity = HLArticleEntity.fromJson(m);
+            // 更新数据库缓存(插入新数据)
+            HLDBManager.getInstance()?.openDb().then((value) {
+              HLDBManager.getInstance()?.insertItem(entity).then((value) {});
+            });
+            return entity;
+          }).toList();
         });
-        return entity;
-      }).toList();
+      }
 
       if (currentPage == 0) {
         //下拉刷新
@@ -329,49 +348,60 @@ class _HLHomePageState extends State<HLHomePage>
         setState(() {});
       }
     }, errorCallBack: (code, msg) {
-      // 请求失败使用缓存
-      HLDBManager.getInstance()?.openDb().then((value) {
-        HLDBManager.getInstance()?.queryItems(HLArticleEntity()).then((value) {
-          // isFirstLoad = false;
-          // articles = value;
-          // setState(() {});
+      // 请求失败
+    });
+  }
+
+  List<HLDbBaseEntity>? handleResponseJson<T extends HLDbBaseEntity>(T t, List list) {
+    List<HLDbBaseEntity> newList = [];
+    // 更新数据库缓存(移除旧数据)
+    HLDBManager.getInstance()?.deleteItem(t).then((value) {
+      // 处理数据map->model
+      newList = list.map((m) {
+        HLDbBaseEntity entity = t.fromMap(m);
+        // 更新数据库缓存(插入新数据)
+        HLDBManager.getInstance()?.openDb().then((value) {
+          HLDBManager.getInstance()?.insertItem(entity).then((value) {});
         });
-      });
+        return entity;
+      }).toList();
+      return newList;
     });
   }
 
   ///获取主页轮播
-  getBanners() async {
-    print("获取主页轮播列表 1");
+  getBanners() {
+    // 先显示缓存数据
+    HLDBManager.getInstance()?.openDb().then((value) {
+      HLDBManager.getInstance()?.queryItems(HLBannerEntity()).then((value) {
+        if (banners.isEmpty) {
+          banners = value as List<HLBannerEntity>;
+          setState(() {});
+        }
+      });
+    });
+    // 同时加载在线数据
     HLHttpClient.getInstance().get(Api.get_banners, context: context,
         successCallBack: (data) {
       List responseJson = data;
-      print("获取主页轮播列表 == $responseJson");
-      List<HLBannerEntity> newBanners = responseJson.map((m) {
-        print("主页轮播 == $m");
-        HLBannerEntity entity = HLBannerEntity.fromJson(m);
-        print("主页轮播 fromJson");
-        HLDBManager.getInstance()?.openDb().then((value) {
-          HLDBManager.getInstance()?.insertItem(entity).then((value) {
-            print("添加成功");
-          });
-        });
-        return entity;
-      }).toList();
-      print("主页轮播 toList");
-      banners = newBanners;
+      print("net-get_articles:$responseJson");
+      List<HLBannerEntity> newBanners = [];
+      // if (responseJson.isNotEmpty) {
+      //    newBanners = responseJson.map((m) {
+      //     HLBannerEntity entity = HLBannerEntity.fromJson(m);
+      //     HLDBManager.getInstance()?.openDb().then((value) {
+      //       HLDBManager.getInstance()?.insertItem(entity).then((value) {
+      //       });
+      //     });
+      //     return entity;
+      //   }).toList();
+      // }
+      banners = handleResponseJson(HLBannerEntity(), responseJson) as List<HLBannerEntity>;
       if (articles.isNotEmpty) {
         setState(() {});
       }
     }, errorCallBack: (code, msg) {
-      // 请求失败使用缓存
-      HLDBManager.getInstance()?.openDb().then((value) {
-        HLDBManager.getInstance()?.queryItems(HLBannerEntity()).then((value) {
-          // articles = value;
-          // setState(() {});
-        });
-      });
+      // 请求失败
     });
   }
-
 }

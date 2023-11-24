@@ -1,48 +1,50 @@
-import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite/sqlite_api.dart';
 import 'hl_db_base_entity.dart';
 import 'hl_db_config.dart';
 
 /// 数据库存储
 class HLDBManager {
   // 数据库路径
-  late String databasesPath;
+  late String databasesPath = "";
 
   // 数据库
   late Database database;
 
+  // 数据库是否打开
+  late bool databaseIsOpen = false;
+
   static HLDBManager? instance;
 
   static HLDBManager? getInstance() {
-    if (null == instance) instance = HLDBManager();
+    instance ??= HLDBManager();
     return instance!;
   }
 
   /// 打开数据库
-  Future openDb({String? dbName}) async {
-    // 如果数据库路径不存在，赋值
-    if (null == databasesPath || databasesPath.isEmpty)
+  Future<void> openDb({String? dbName}) async {
+    if (databaseIsOpen) {
+      // 数据库已打开
+      return;
+    }
+    databaseIsOpen = true;
+    // 获取数据库路径
+    if (databasesPath.isEmpty) {
       databasesPath = await getDatabasesPath();
-
+    }
+    // 数据库名称
     if (dbName == null || dbName == "") {
-      // 使用默认数据库
       dbName = HLDBConfig.db_name;
     }
-
-    // 如果数据库存在，而且数据库没有关闭，先关闭数据库
-    closeDb();
-
-    print('*****************数据库路径***************** == $databasesPath/' +
-        dbName +
-        '.db');
     String path = join(databasesPath, dbName + '.db');
+    print('sqflite-数据库全路径:$path');
     database = await openDatabase(path, version: HLDBConfig.db_version, onCreate: (Database db, int version) async {
       await db.execute(
           'CREATE TABLE homeArticle (id INTEGER PRIMARY KEY, title TEXT, desc TEXT, shareUser TEXT, author TEXT, '
               'link TEXT, shareDate INTEGER, zan INTEGER, type INTEGER, fresh INTEGER, collect INTEGER, '
               'niceDate TEXT, envelopePic TEXT, superChapterName TEXT, chapterName TEXT)');
+      await db.execute(
+          'CREATE TABLE homeBanner (id INTEGER PRIMARY KEY, title TEXT, desc TEXT, imagePath TEXT,url TEXT)');
     }, onUpgrade: (Database db, int oldVersion, int newVersion) {
       // 版本更新可能牵扯到重新插入表、删除表、表中字段变更-具体更新相关sql语句进行操作
     });
@@ -52,7 +54,7 @@ class HLDBManager {
   Future<void> insertItem<T extends HLDbBaseEntity>(T t) async {
 
     if (null == database || !database.isOpen) return;
-    print(("开始插入数据：${t.toMap()}"));
+    print(("sqflite-开始插入数据:${t.toMap()}"));
 
     // 插入操作
     await database.insert(
@@ -74,7 +76,7 @@ class HLDBManager {
       // 删除数据
       await database.delete(
         t.getTableName(),
-        where: (key + " = ?"),
+        where: ("$key = ?"),
         whereArgs: [value],
       );
     }
@@ -89,7 +91,7 @@ class HLDBManager {
     await database.update(
       t.getTableName(),
       t.toMap(),
-      where: (key + " = ?"),
+      where: ("$key = ?"),
       whereArgs: [value],
     );
   }
@@ -107,14 +109,14 @@ class HLDBManager {
     } else {
       maps = await database.query(
         t.getTableName(),
-        where: (key + " = ?"),
+        where: ("$key = ?"),
         whereArgs: [value],
       );
     }
 
     // map转换为List集合
     return List.generate(maps.length, (i) {
-      print('查询的数据 == ${maps[i]}');
+      print('sqflite-查询的数据: ${maps[i]}');
       return t.fromMap(maps[i]);
     });
   }
