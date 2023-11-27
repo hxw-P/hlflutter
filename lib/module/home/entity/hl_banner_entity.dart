@@ -16,13 +16,13 @@ class HLBannerEntity extends HLDbBaseEntity {
     this.url,
   });
 
-  factory HLBannerEntity.fromJson(Map<String, dynamic> json) => HLBannerEntity(
-    id: json['id'],
-    title: json['title'],
-    desc: json['desc'],
-    imagePath: json['imagePath'],
-    url: json['url'],
-  );
+  // factory HLBannerEntity.fromJson(Map<String, dynamic> json) => HLBannerEntity(
+  //   id: json['id'],
+  //   title: json['title'],
+  //   desc: json['desc'],
+  //   imagePath: json['imagePath'],
+  //   url: json['url'],
+  // );
 
   Map<String, dynamic> toJson() => {
     'id': id,

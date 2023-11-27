@@ -36,23 +36,23 @@ class HLArticleEntity extends HLDbBaseEntity {
     this.chapterName,
   });
 
-  factory HLArticleEntity.fromJson(Map<String, dynamic> json) => HLArticleEntity(
-    id: json['id'],
-    title: json['title'],
-    desc: json['desc'],
-    shareUser: json['shareUser'],
-    author: json['author'],
-    link: json['link'],
-    shareDate: json['shareDate'],
-    zan: json['zan'],
-    type: json['type'],
-    fresh: json['fresh'],
-    collect: json['collect'],
-    niceDate: json['niceDate'],
-    envelopePic: json['envelopePic'],
-    superChapterName: json['superChapterName'],
-    chapterName: json['chapterName'],
-  );
+  // factory HLArticleEntity.fromJson(Map<String, dynamic> json) => HLArticleEntity(
+  //   id: json['id'],
+  //   title: json['title'],
+  //   desc: json['desc'],
+  //   shareUser: json['shareUser'],
+  //   author: json['author'],
+  //   link: json['link'],
+  //   shareDate: json['shareDate'],
+  //   zan: json['zan'],
+  //   type: json['type'],
+  //   fresh: json['fresh'],
+  //   collect: json['collect'],
+  //   niceDate: json['niceDate'],
+  //   envelopePic: json['envelopePic'],
+  //   superChapterName: json['superChapterName'],
+  //   chapterName: json['chapterName'],
+  // );
 
   @override
   HLDbBaseEntity fromMap(Map<String, dynamic> map) => HLArticleEntity(
