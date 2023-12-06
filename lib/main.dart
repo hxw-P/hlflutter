@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:hlflutter/module/common/hl_web_page.dart';
 import 'package:hlflutter/module/main/hl_tabBar_page.dart';
 import 'package:provider/provider.dart';
@@ -30,8 +32,26 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    // 把MaterialApp换成GetMaterialApp，Getx
+    return GetMaterialApp(
       title: 'Flutter Demo',
+      // // 处理Named页面跳转 传递参数
+      // onGenerateRoute: (RouteSettings settings) {
+      //   // 统一处理
+      //   final String? name = settings.name;
+      //   final Function pageContentBuilder = routers[name];
+      //   if (pageContentBuilder != null) {
+      //     final Route route =
+      //     MaterialPageRoute(
+      //       builder: (context) {
+      //         //将RouteSettings中的arguments参数取出来，通过构造函数传入
+      //         return pageContentBuilder(context, arguments: settings.arguments);
+      //       },
+      //       settings: settings,
+      //     );
+      //     return route;
+      //   }
+      // },
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -53,12 +73,27 @@ class MyApp extends StatelessWidget {
           child: child,
         ),
       ),
+      // 注册路由表 MaterialApp方式，Getx也可以生效
       home: const HLGuidePage(),
-      // 注册路由表
       routes: {
-        "noti_page": (context) => const HLNotiPage(),
-        "web_page": (context) => const HLWebPage(),
+        "/noti": (context) => const HLNotiPage(),
+        "/web": (context) => const HLWebPage(),
       },
+      // 注册路由表 Getx方式
+      // getPages: [
+      //   GetPage(
+      //     name: '/guide',
+      //     page: () => const HLGuidePage(),
+      //   ),
+      //   GetPage(
+      //     name: '/noti',
+      //     page: () => const HLNotiPage(),
+      //   ),
+      //   GetPage(
+      //     name: '/web',
+      //     page: () => const HLWebPage(),
+      //   ),
+      // ],
     );
   }
 }

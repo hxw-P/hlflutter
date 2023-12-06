@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:hlflutter/common/hl_native_handle.dart';
 import 'package:hlflutter/custom/hl_view_tool.dart';
 import 'package:hlflutter/custom/hl_toast.dart';
@@ -238,26 +240,13 @@ class _HLHomePageState extends State<HLHomePage>
                             );
                           },
                           onTap: (int index) {
-                            Navigator.pushNamed(context, "web_page",
-                                arguments: {
-                                  "url": banners[index].url ?? "",
-                                  "title": banners[index].title ?? ""
-                                });
+                            goBannaerDetail(index);
                           },
                         ),
                       )
                     : HLBusinessView.articleRow(
                         c, appTheme, i - 1, articles[i - 1], actionBlock: () {
-                        print("点击cell");
-                        // var params = Map<String, String>.from({"url": articles[i].link ?? "", "title": articles[i].title ?? ""});
-                        Navigator.pushNamed(context, "web_page", arguments: {
-                          "url": articles[i - 1].link ?? "",
-                          "title": articles[i - 1].title ?? ""
-                        });
-                        // Navigator.of(context)
-                        //     .push(CupertinoPageRoute(builder: (_) {
-                        //   return ArticleDetailPage();
-                        // }));
+                        goArticleDetail(i - 1);
                       }),
                 // 高度设置就是固定的了
                 // itemExtent: 200.0,
@@ -272,6 +261,32 @@ class _HLHomePageState extends State<HLHomePage>
                       backgroundColor: Colors.orange),
             ),
     );
+  }
+
+  /// 点击跳转文章详情
+  goArticleDetail(int index) {
+    //Getx 方式跳转
+    Get.toNamed("/web", arguments: {
+      // 传参
+      "url": articles[index].link ?? "",
+      "title": articles[index].title ?? ""
+    })?.then((value) {
+      // 回参
+      print("$value");
+    });
+  }
+
+  /// 点击跳转banner详情
+  goBannaerDetail(int index) {
+    //Getx 方式跳转
+    Get.toNamed("/web", arguments: {
+      // 传参
+      "url": banners[index].url ?? "",
+      "title": banners[index].title ?? ""
+    })?.then((value) {
+      // 回参
+      print("$value");
+    });
   }
 
   /// 创建搜索框
@@ -304,48 +319,46 @@ class _HLHomePageState extends State<HLHomePage>
   ///获取主页文章
   getArticles() async {
     // 先显示缓存数据
-    // if (currentPage == 0) {
-    //   await HLDBManager.getInstance()?.openDb().then((value) async {
-    //     await HLDBManager.getInstance()?.queryItems(HLArticleEntity()).then((value) {
-    //       print("getArticles${value?.length}");
-    //       articles = value!.map((e) {
-    //         HLArticleEntity entity = e as HLArticleEntity;
-    //         return entity;
-    //       }).toList();
-    //     });
+    // await HLDBManager.getInstance()?.openDb().then((value) async {
+    //   await HLDBManager.getInstance()?.queryItems(HLArticleEntity()).then((value) {
+    //     print("getArticles${value?.length}");
+    //     articles = value!.map((e) {
+    //       HLArticleEntity entity = e as HLArticleEntity;
+    //       return entity;
+    //     }).toList();
     //   });
-    //   if (articles.isNotEmpty&&banners.isNotEmpty) {
-    //     setState(() {});
-    //   }
+    // });
+    // if (articles.isNotEmpty&&banners.isNotEmpty) {
+    //   setState(() {});
     // }
     // 同时加载在线数据
     HLHttpClient.getInstance().get("${Api.get_articles}$currentPage/json",
         context: context, successCallBack: (data) async {
-      List responseJson = data["datas"];
-      if (responseJson.isNotEmpty) {
-        List<HLArticleEntity> newArticles = [];
-        await handleResponseJson(HLArticleEntity(), responseJson).then((value) {
-          newArticles = value!.map((e) {
-            HLArticleEntity entity = e as HLArticleEntity;
-            return entity;
-          }).toList();
+          List responseJson = data["datas"];
+          if (responseJson.isNotEmpty) {
+            List<HLArticleEntity> newArticles = [];
+            await handleResponseJson(HLArticleEntity(), responseJson).then((value) {
+              newArticles = value!.map((e) {
+                HLArticleEntity entity = e as HLArticleEntity;
+                return entity;
+              }).toList();
+            });
+            if (currentPage == 0) {
+              //下拉刷新
+              articles = newArticles;
+              _refreshController.refreshCompleted();
+            } else {
+              //上拉加载更多
+              articles.addAll(newArticles);
+              _refreshController.loadComplete();
+            }
+            if (articles.isNotEmpty&&banners.isNotEmpty) {
+              setState(() {});
+            }
+          }
+        }, errorCallBack: (code, msg) {
+          // 请求失败
         });
-        if (currentPage == 0) {
-          //下拉刷新
-          articles = newArticles;
-          _refreshController.refreshCompleted();
-        } else {
-          //上拉加载更多
-          articles.addAll(newArticles);
-          _refreshController.loadComplete();
-        }
-        if (articles.isNotEmpty&&banners.isNotEmpty) {
-          setState(() {});
-        }
-      }
-    }, errorCallBack: (code, msg) {
-      // 请求失败
-    });
   }
 
   Future<List<HLDbBaseEntity>?> handleResponseJson<T extends HLDbBaseEntity>(T t, List list) async {

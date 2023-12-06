@@ -97,11 +97,7 @@ class _HLProjectPageState extends State<HLProjectPage> with AutomaticKeepAliveCl
           itemCount: projects.length,
           itemBuilder: (BuildContext context, int index) => Container(
             child: HLBusinessView.projectGrid(context, appTheme, index, projects[index], actionBlock: () {
-              print("projectGrid");
-              Navigator.pushNamed(context, "web_page", arguments: {
-                "url": projects[index].link ?? "",
-                "title": projects[index].title ?? ""
-              });
+              goProjectDetail(index);
             }),
           ),
           staggeredTileBuilder: (int index) => StaggeredTile.count(1, index == 0 ? 1 : 1.5),
@@ -117,6 +113,19 @@ class _HLProjectPageState extends State<HLProjectPage> with AutomaticKeepAliveCl
         ),
       ),
       );
+  }
+
+  /// 点击跳转项目详情
+  goProjectDetail(int index) {
+    // MaterialPageRoute 方式跳转
+    Navigator.pushNamed(context, "/web", arguments: {
+      // 传参
+      "url": projects[index].link ?? "",
+      "title": projects[index].title ?? ""
+    },).then((value) {
+      // 回参
+      print("$value");
+    });
   }
 
   /// 下拉刷新

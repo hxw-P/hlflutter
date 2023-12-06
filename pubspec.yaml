@@ -57,6 +57,8 @@ dependencies:
   sqflite: ^2.3.0  #数据库
   path_provider: ^2.0.1       #路径管理
   image_picker: ^0.8.4+11     #拍照，相册
+  #----->路由状态
+  get:
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -26,13 +28,23 @@ class _HLWebPageState extends State<HLWebPage> {
 
   @override
   Widget build(BuildContext context) {
-    /// 获取路由参数
-    var argumentMap = ModalRoute
-        .of(context)
-        ?.settings
-        .arguments as Map<String, String>;
-    url = argumentMap["url"]!;
-    title = argumentMap["title"]!;
+
+    if (ModalRoute.of(context) != null) {
+      /// 获取路由参数,MaterialPageRoute 方式跳转
+      var argumentMap = ModalRoute
+          .of(context)
+          !.settings
+          .arguments as Map<String, String>;
+      if (argumentMap != null) {
+        url = argumentMap["url"]??"";
+        title = argumentMap["title"]??"";
+      }
+    }
+    else {
+      /// 获取路由参数,Getx 方式跳转
+      url = Get.parameters['url']??"";
+      title = Get.parameters['title']??"";
+    }
 
     /// 设置主题
     var appTheme = Provider.of<AppTheme>(context);
@@ -66,7 +78,7 @@ class _HLWebPageState extends State<HLWebPage> {
       backgroundColor: appTheme.backGroundColor,
       appBar: HLViewTool.appBar(
           title, appTheme, enableBack: true, backAction: () {
-        Navigator.of(context).pop();
+        Navigator.of(context).pop("返回来自:$title");
       }),
       body: ChangeNotifierProvider(
         create: (context) => IndicatorShow(),
