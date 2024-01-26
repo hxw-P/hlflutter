@@ -7,6 +7,9 @@ import '../common/hl_util.dart';
 import '../module/home/entity/hl_article_entity.dart';
 import 'hl_view_tool.dart';
 
+/// 文章列表操作
+enum ArticleAction { detail, collect, cancelCollect }
+
 class HLBusinessView {
   /// 文章列表cell
   static articleRow(
@@ -50,12 +53,14 @@ class HLBusinessView {
                     padding: EdgeInsets.fromLTRB(
                         Util.px(10), Util.px(5), Util.px(10), Util.px(5)),
                     height: Util.px(30),
-                    child: (article.collect != null ? article.collect! : false)
-                        ? Image.asset("images/home/collect_sel.png")
-                        : Image.asset("images/home/collect.png"),
+                    child: article.collect == true ? Image.asset("images/home/list_collect_sel.png")
+                        : Image.asset("images/home/list_collect_nor.png"),
                   ),
                   onTap: () {
                     print("${article.collect}点击收藏");
+                    if (actionBlock != null) {
+                      actionBlock(article.collect == true ? ArticleAction.cancelCollect : ArticleAction.collect);
+                    }
                   },
                 )
               ],
@@ -67,7 +72,8 @@ class HLBusinessView {
                     children: [
                       // 标题
                       Padding(
-                        padding: EdgeInsets.fromLTRB(Util.px(5), 0, Util.px(10), 0),
+                        padding:
+                            EdgeInsets.fromLTRB(Util.px(5), 0, Util.px(10), 0),
                         child: Text(
                           "${article.title}",
                           maxLines: 2,
@@ -89,7 +95,8 @@ class HLBusinessView {
                             padding: EdgeInsets.fromLTRB(Util.px(5), 0, 0, 0),
                             width: Util.px(50),
                             child: FadeInImage.assetNetwork(
-                                placeholder: "images/common/img_placeholder.png",
+                                placeholder:
+                                    "images/common/img_placeholder.png",
                                 fit: BoxFit.fitWidth,
                                 image: article.envelopePic!),
                           ),
@@ -122,7 +129,8 @@ class HLBusinessView {
                       // 这边要用expand包起来，不然当文字长度过长回报A RenderFlex overflowed by xx pixels on the right.这种错误
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.fromLTRB(Util.px(5), 0, Util.px(10), 0),
+                          padding: EdgeInsets.fromLTRB(
+                              Util.px(5), 0, Util.px(10), 0),
                           child: Text(
                             "${article.title}",
                             maxLines: 2,
@@ -170,47 +178,116 @@ class HLBusinessView {
       ),
       onTap: () {
         if (actionBlock != null) {
-          actionBlock();
+          actionBlock(ArticleAction.detail);
         }
       },
     );
   }
 
   /// 项目列表cell
-  static projectGrid(BuildContext context,
-      AppTheme appTheme,
-      int index,
-      HLProjectEntity project, {
-        Function? actionBlock,
-      }) {
+  static projectGrid(
+    BuildContext context,
+    AppTheme appTheme,
+    int index,
+    HLProjectEntity project, {
+    Function? actionBlock,
+  }) {
     return GestureDetector(
       child: Container(
-        margin: EdgeInsets.fromLTRB(Util.px(5), Util.px(5), Util.px(5), Util.px(5)),
+        margin:
+            EdgeInsets.fromLTRB(Util.px(5), Util.px(5), Util.px(5), Util.px(5)),
         color: Colors.white,
         child: Stack(
           fit: StackFit.expand,
           alignment: Alignment.center,
           children: [
-            FadeInImage.assetNetwork(placeholder: "images/common/img_placeholder.png",
+            FadeInImage.assetNetwork(
+                placeholder: "images/common/img_placeholder.png",
                 fit: BoxFit.fill,
                 image: project.envelopePic!),
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                HLViewTool.createText(text: "${project.title}", color: appTheme.titleColor, fontSize: 20, fontWeight: FontWeight.w400),
-                HLViewTool.createText(text: "${project.desc}", color: appTheme.subTitleDarkColor, fontSize: 16, fontWeight: FontWeight.w400, maxLines: 2)
+                HLViewTool.createText(
+                    text: "${project.title}",
+                    color: appTheme.titleColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w400),
+                HLViewTool.createText(
+                    text: "${project.desc}",
+                    color: appTheme.subTitleDarkColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    maxLines: 2)
               ],
             )
           ],
         ),
-        ),
+      ),
       onTap: () {
         if (actionBlock != null) {
           actionBlock();
         }
       },
-      );
+    );
   }
 
+  /// 通用cell
+  static commonRow(
+    BuildContext context,
+    AppTheme appTheme,
+    int index,
+    String title,
+    String iconPath, {
+    Function? actionBlock,
+    double height = 40,
+    double leftGap = 10,
+        double imgRightGap = 10,
+        double rightGap = 10,
+    bool hasArrow = true,
+  }) {
+    return GestureDetector(
+      child: Container(
+        margin: EdgeInsets.fromLTRB(leftGap, 0, rightGap, 0),
+        height: height,
+        color: Colors.white,
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  height: height - Util.px(1),
+                  child: Row(
+                    children: [
+                      Image.asset(iconPath, width: Util.px(20), height: Util.px(20)),
+                      Container(
+                        margin: EdgeInsets.fromLTRB(imgRightGap, 0, 0, 0),
+                        child: HLViewTool.createText(
+                            text: title,
+                            color: appTheme.titleColor,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      )
+                    ],
+                  ),
+                ),
+                hasArrow == true ? Image.asset('images/common/arrow.png', width: Util.px(20), height: Util.px(20)) : Container(),
+              ],
+            ),
+            Divider(
+              height: Util.px(1),
+              color: appTheme.dividerColor,
+            )
+          ],
+        )
+      ),
+      onTap: () {
+        if (actionBlock != null) {
+          actionBlock();
+        }
+      },
+    );
+  }
 }

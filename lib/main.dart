@@ -6,6 +6,7 @@ import 'package:hlflutter/module/main/hl_tabBar_page.dart';
 import 'package:provider/provider.dart';
 import 'package:hlflutter/common/hl_app_theme.dart';
 
+import 'common/hl_router.dart';
 import 'module/guide/hl_guide_page.dart';
 import 'module/home/page/hl_article_detail_page.dart';
 import 'module/home/page/hl_noti_page.dart';
@@ -74,10 +75,13 @@ class MyApp extends StatelessWidget {
         ),
       ),
       // 注册路由表 MaterialApp方式，Getx也可以生效
-      home: const HLGuidePage(),
+      home: const HLLoginPage(),
       routes: {
-        "/noti": (context) => const HLNotiPage(),
-        "/web": (context) => const HLWebPage(),
+        HLRoutes.noti: (context) => const HLNotiPage(),
+        HLRoutes.web: (context) => const HLWebPage(),
+        HLRoutes.guide: (context) => const HLGuidePage(),
+        HLRoutes.main: (context) => TabBarPage(),
+        HLRoutes.login: (context) => const HLLoginPage(),
       },
       // 注册路由表 Getx方式
       // getPages: [

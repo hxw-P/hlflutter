@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:hlflutter/common/hl_router.dart';
 import 'package:provider/provider.dart';
 import '../../common/hl_app_theme.dart';
 import '../../common/hl_util.dart';
 import '../../custom/hl_view_tool.dart';
 import '../main/hl_tabBar_page.dart';
+import 'hl_login_controller.dart';
 import 'hl_privacy_page.dart';
 
 class HLLoginPage extends StatefulWidget {
@@ -18,6 +22,7 @@ class HLLoginPage extends StatefulWidget {
 class _HLLoginPageState extends State<HLLoginPage> {
   TextEditingController loginIdText  = TextEditingController();
   TextEditingController pwdText = TextEditingController();
+  HLLoginController loginController = Get.put(HLLoginController());
   bool selPrivacy = true;
 
   @override
@@ -116,11 +121,13 @@ class _HLLoginPageState extends State<HLLoginPage> {
                           fontWeight: FontWeight.normal),
                     ),
                     onTap: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => TabBarPage()),
-                            (route) => false,
-                      );
+                      // Navigator.pushAndRemoveUntil(
+                      //   context,
+                      //   MaterialPageRoute(builder: (context) => TabBarPage()),
+                      //       (route) => false,
+                      // );
+                      loginController.login(context, loginIdText.text, pwdText.text, () {
+                      });
                     },
                   ),
                   GestureDetector(

@@ -245,8 +245,15 @@ class _HLHomePageState extends State<HLHomePage>
                         ),
                       )
                     : HLBusinessView.articleRow(
-                        c, appTheme, i - 1, articles[i - 1], actionBlock: () {
-                        goArticleDetail(i - 1);
+                        c, appTheme, i - 1, articles[i - 1], actionBlock: (action) {
+                          if (action == ArticleAction.detail) {
+                            // 进入详情
+                            goArticleDetail(i - 1);
+                          }
+                          else if (action == ArticleAction.collect || action == ArticleAction.cancelCollect) {
+                            // 收藏、取消收藏文章
+                            collect(articles[i - 1]);
+                          }
                       }),
                 // 高度设置就是固定的了
                 // itemExtent: 200.0,
@@ -340,6 +347,7 @@ class _HLHomePageState extends State<HLHomePage>
             await handleResponseJson(HLArticleEntity(), responseJson).then((value) {
               newArticles = value!.map((e) {
                 HLArticleEntity entity = e as HLArticleEntity;
+                print('--------------------${entity.collect}');
                 return entity;
               }).toList();
             });
@@ -370,6 +378,7 @@ class _HLHomePageState extends State<HLHomePage>
         // 处理文章数据map->model
         print("test-测试异步2");
         newList = list.map((m) {
+          print('--------------------${m['collect']}');
           HLDbBaseEntity entity = t.fromMap(m);
           // 更新数据库缓存(插入新数据)
           HLDBManager.getInstance()?.openDb().then((value) {
@@ -421,4 +430,49 @@ class _HLHomePageState extends State<HLHomePage>
       // 请求失败
     });
   }
+
+  ///收藏
+  collect(HLArticleEntity articleEntity) {
+    HLHttpClient.getInstance().post("${Api.post_collect_article}${articleEntity.id}/json", context: context,
+        successCallBack: (data) async {
+          // List responseJson = data;
+          // if (responseJson.isNotEmpty) {
+          //   await handleResponseJson(HLBannerEntity(), responseJson).then((value) {
+          //     banners = value!.map((e) {
+          //       HLBannerEntity entity = e as HLBannerEntity;
+          //       return entity;
+          //     }).toList();
+          //   });
+          //   print("net-get_banners:$banners");
+          //   if (articles.isNotEmpty&&banners.isNotEmpty) {
+          //     setState(() {});
+          //   }
+          // }
+        }, errorCallBack: (code, msg) {
+          // 请求失败
+        });
+  }
+
+  ///取消收藏
+  unCollect() {
+    // HLHttpClient.getInstance().post("${Api.post_collect_inner_article}$currentPage/json", context: context,
+    //     successCallBack: (data) async {
+    //       List responseJson = data;
+    //       if (responseJson.isNotEmpty) {
+    //         await handleResponseJson(HLBannerEntity(), responseJson).then((value) {
+    //           banners = value!.map((e) {
+    //             HLBannerEntity entity = e as HLBannerEntity;
+    //             return entity;
+    //           }).toList();
+    //         });
+    //         print("net-get_banners:$banners");
+    //         if (articles.isNotEmpty&&banners.isNotEmpty) {
+    //           setState(() {});
+    //         }
+    //       }
+    //     }, errorCallBack: (code, msg) {
+    //       // 请求失败
+    //     });
+  }
+
 }

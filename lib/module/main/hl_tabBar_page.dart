@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // page
 import 'package:hlflutter/module/home/page/hl_home_page.dart';
+import 'package:hlflutter/module/personal/hl_personal_page.dart';
 import 'package:hlflutter/module/project/hl_project_page.dart';
 import 'package:hlflutter/common/hl_util.dart';
 import 'package:hlflutter/common/hl_app_theme.dart';
@@ -19,7 +20,7 @@ class _TabBarPageState extends State<TabBarPage> {
   int currentIndex = 0;
   PageController pageController = PageController(initialPage: 0);
   /// 子控制器
-  final pages = [HLHomePage(title: "首页"), HLProjectPage()];
+  final pages = [HLHomePage(title: "首页"), HLProjectPage(), HLPersonalPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -62,13 +63,13 @@ class _TabBarPageState extends State<TabBarPage> {
                                   ? "images/bottom_tabbar/guangchang_sel.png"
                                   : "images/bottom_tabbar/guangchang_nor.png",
                               appTheme),
-                          // createBottomAppBarItem(
-                          //     0,
-                          //     "测试",
-                          //     currentIndex == 2
-                          //         ? "images/bottom_tabbar/project_sel.png"
-                          //         : "images/bottom_tabbar/project_nor.png",
-                          //     appTheme),
+                          createBottomAppBarItem(
+                              2,
+                              "我的",
+                              currentIndex == 2
+                                  ? "images/bottom_tabbar/yonghu_sel.png"
+                                  : "images/bottom_tabbar/yonghu_nor.png",
+                              appTheme),
                         ]
                     ),
                   ],

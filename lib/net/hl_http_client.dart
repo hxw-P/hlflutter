@@ -42,6 +42,7 @@ class HLHttpClient {
 
     //默认使用 CookieJar , 它会将cookie保存在内存中
     dio.interceptors.add(CookieManager(CookieJar()));
+    // dio.interceptors.add(CookieManager(CookieHandle.cookieJar as CookieJar));
 
     //添加拦截器
     if (HLConfig.isDebug) {
@@ -145,6 +146,7 @@ class HLHttpClient {
     if (null != response.data) {
       ResponseEntity responseEntity =
           ResponseEntity.fromJson(json.decode(response.toString()));
+      print('ResponseEntity success---------${responseEntity.errorCode}');
       if (null != responseEntity) {
         switch (responseEntity.errorCode) {
           case 0:

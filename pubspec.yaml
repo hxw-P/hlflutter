@@ -50,7 +50,7 @@ dependencies:
   #----->下拉刷新
   easy_refresh: ^3.3.0+1 #下拉刷新
   pull_to_refresh: ^2.0.0
-  #  shared_preferences: ^0.5.3+4
+  shared_preferences: ^2.2.2
   #  path_provider: 1.5.1  #状态管理
   #----->状态管理
   provider: ^6.0.5
@@ -88,7 +88,10 @@ flutter:
     - images/bottom_tabbar/shouye_sel.png
     - images/bottom_tabbar/guangchang_nor.png
     - images/bottom_tabbar/guangchang_sel.png
-    - images/home/collect.png
+    - images/bottom_tabbar/yonghu_nor.png
+    - images/bottom_tabbar/yonghu_sel.png
+    - images/home/list_collect_nor.png
+    - images/home/list_collect_sel.png
     - images/home/tianjia.png
     - images/home/tongzhi.png
     - images/home/bianji.png
@@ -96,12 +99,15 @@ flutter:
     - images/home/sousuo.png
     - images/personal/head.png
     - images/personal/head_back.png
+    - images/personal/web.png
+    - images/personal/wenjian.png
     - images/search/back.png
     - images/login/login_red.png
     - images/login/login_btn_chose_nomal.png
     - images/login/login_btn_chose_clicked.png
     - images/common/text-field/clear.png
     - images/common/img_placeholder.png
+    - images/common/arrow.png
     - images/guide/guide_1.png
     - images/guide/guide_2.png
     - images/guide/guide_3.png
