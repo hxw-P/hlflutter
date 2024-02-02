@@ -11,7 +11,7 @@ class ResponseEntity {
   });
 
   factory ResponseEntity.fromJson(Map<String, dynamic> json) => ResponseEntity(
-        data: json['data'],
+        data: json['data'] ?? {},
         errorCode: json['errorCode'],
         errorMsg: json['errorMsg'],
       );

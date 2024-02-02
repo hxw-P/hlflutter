@@ -15,6 +15,10 @@ class HLToast {
   static late double _pdHorizontal; // 左右边距
   static late double _pdVertical; // 上下边距
 
+  static init() {
+
+  }
+
   static void toast(
     BuildContext context, {
     String msg = "",
@@ -39,7 +43,11 @@ class HLToast {
     //获取OverlayState
     OverlayState? overlayState = Overlay.of(context);
     _showing = true;
+
+    print('_overlayEntry xxxxx');
+
     if (_overlayEntry == null) {
+      print('_overlayEntry == null');
       _overlayEntry = OverlayEntry(
         builder: (BuildContext context) => Positioned(
           //top值，可以改变这个值来改变toast在屏幕中的位置
@@ -63,6 +71,7 @@ class HLToast {
       );
       overlayState!.insert(_overlayEntry);
     } else {
+      print('_overlayEntry != null');
       //重新绘制UI，类似setState
       _overlayEntry.markNeedsBuild();
     }

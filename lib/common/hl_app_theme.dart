@@ -57,6 +57,12 @@ class AppTheme with ChangeNotifier {
   /// 按钮背景色
   Color _btnBackColor = Util.rgbColor('#2E6BE5');
 
+  /// toast背景色
+  Color _toastBackColor = Util.rgbColor('#FF4040');
+
+  /// toast文字颜色色
+  Color _toastTitleColor = Util.rgbColor('#FFFAFA');
+
   get themeColor => _themeColor;
 
   get appbarTitleColor => _appbarTitleColor;
@@ -93,6 +99,9 @@ class AppTheme with ChangeNotifier {
 
   get btnBackColor => _btnBackColor;
 
+  get toastBackColor => _toastBackColor;
+  get toastTitleColor => _toastTitleColor;
+
   void updateColors(bool isDark) {
     var color = isDark ? darkColor : normalColor;
     this._themeColor = color['themeColor']!;
@@ -113,6 +122,8 @@ class AppTheme with ChangeNotifier {
     this._dividerColor = color['dividerColor']!;
     this._switchColor = color['switchColor']!;
     this._btnBackColor = color['btnBackColor']!;
+    this._toastBackColor = color['toastBackColor']!;
+    this._toastTitleColor = color['toastTitleColor']!;
     notifyListeners();
   }
 
@@ -135,6 +146,8 @@ class AppTheme with ChangeNotifier {
     'dividerColor': Util.rgbColor('#F4F4F4'),
     'switchColor': Colors.green,
     'btnBackColor': Util.rgbColor('#2E6BE5'),
+    'toastBackColor': Util.rgbColor('#FF4040'),
+    'toastTitleColor': Util.rgbColor('#FFFAFA'),
   };
 
   final Map<String, Color> darkColor = {
@@ -156,5 +169,7 @@ class AppTheme with ChangeNotifier {
     'dividerColor': Color(0xff666666),
     'switchColor': Colors.green,
     'btnBackColor': Util.rgbColor('#2E6BE5'),
+    'toastBackColor': Util.rgbColor('#FF4500'),
+    'toastTitleColor': Util.rgbColor('#FFFAFA'),
   };
 }

@@ -1,17 +1,22 @@
 import 'package:get/get.dart';
 
-class Teacher {
-  // rx 变量
-  var name = "mabo".obs;
-  var age = 30.obs;
-}
+import '../../common/hl_router.dart';
 
 class HLPersonalController extends GetxController {
 
-  var teacher = Teacher();
-  void convertToUpperCase() {
-    teacher.name.value = teacher.name.value.toUpperCase();
-    update();
+  /// 个人页面选项
+  selItem(int index) {
+    print('selItem ${index}');
+    if (index == 0) {
+    }
+    else if (index == 1) {
+    }
+    else if (index == 2) {
+    }
+    else if (index == 3) {
+      // 设置
+      Get.toNamed(HLRoutes.set);
+    }
   }
 
 }

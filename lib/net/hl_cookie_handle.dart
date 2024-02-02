@@ -22,7 +22,10 @@ class CookieHandle {
   static Future<PersistCookieJar> get cookieJar async {
     if (_cookieJar == null) {
       Directory appDocDir = await getApplicationDocumentsDirectory();
-      _cookieJar = PersistCookieJar(storage: FileStorage(appDocDir.path));
+      String dir = "${appDocDir.path}/.cookies/";
+      print("\n================== cookie路径地址 ==========================");
+      print( 'path = $dir');
+      _cookieJar = PersistCookieJar(ignoreExpires: true, storage: FileStorage(dir));
     }
     return _cookieJar!;
   }

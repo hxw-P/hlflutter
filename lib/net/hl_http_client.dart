@@ -1,12 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:path_provider/path_provider.dart';
 import '../common/hl_config.dart';
 import 'hl_api.dart';
 import 'hl_client_handle.dart';
 import 'hl_code.dart';
+import 'hl_cookie_handle.dart';
 import 'hl_response_entity.dart';
 
 ///请求管理类
@@ -22,7 +25,7 @@ class HLHttpClient {
     return instance!;
   }
 
-  HLHttpClient() {
+  HLHttpClient()  {
     //BaseOptions、Options、RequestOptions 都可以配置参数，优先级别依次递增，且可以根据优先级别覆盖参数
     options = BaseOptions(
       //请求基地址,可以包含子路径
@@ -40,8 +43,9 @@ class HLHttpClient {
     );
     dio = Dio(options);
 
-    //默认使用 CookieJar , 它会将cookie保存在内存中
-    dio.interceptors.add(CookieManager(CookieJar()));
+    // 默认使用 CookieJar,它会将cookie保存在内存中,CookieManager可以自动保存和使用cookie但是不会持久化，下次打开app就没了
+    // dio.interceptors.add(CookieManager(CookieJar()));
+    // 使用PersistCookieJar的话，需要加await(不加无法持久化)，然后HLHttpClient()方法后面需要加async，也有报错(这个报错不清楚怎么整体处理，后面在研究)，所以加在get和post方法中了，可以实现持久化
     // dio.interceptors.add(CookieManager(CookieHandle.cookieJar as CookieJar));
 
     //添加拦截器
@@ -85,6 +89,7 @@ class HLHttpClient {
     var response;
     print("get请求");
     try {
+      dio.interceptors.add(CookieManager(await CookieHandle.cookieJar));
       response = await dio.get(url,
           queryParameters: params, options: options, cancelToken: cancelToken);
     } on DioError catch (e) {
@@ -137,6 +142,7 @@ class HLHttpClient {
       Function? successCallBack,
       Function? errorCallBack}) async {
     var response;
+    dio.interceptors.add(CookieManager(await CookieHandle.cookieJar));
     try {
       response = await dio.post(url,
           queryParameters: params, options: options, cancelToken: cancelToken);
@@ -146,7 +152,6 @@ class HLHttpClient {
     if (null != response.data) {
       ResponseEntity responseEntity =
           ResponseEntity.fromJson(json.decode(response.toString()));
-      print('ResponseEntity success---------${responseEntity.errorCode}');
       if (null != responseEntity) {
         switch (responseEntity.errorCode) {
           case 0:

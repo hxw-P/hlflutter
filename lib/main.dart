@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:hlflutter/module/common/hl_web_page.dart';
@@ -11,6 +12,8 @@ import 'module/guide/hl_guide_page.dart';
 import 'module/home/page/hl_article_detail_page.dart';
 import 'module/home/page/hl_noti_page.dart';
 import 'module/login/hl_login_page.dart';
+import 'module/personal/hl_personal_page.dart';
+import 'module/personal/set/hl_set_page.dart';
 
 void main() {
   final appTheme = AppTheme();
@@ -25,6 +28,8 @@ void main() {
       child: const MyApp(),
     ),
   );
+  //设置loading风格
+  loadingConfig();
 }
 
 class MyApp extends StatelessWidget {
@@ -65,15 +70,19 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      builder: (context, child) => Scaffold(
-        // 全局取消键盘
-        body: GestureDetector(
-          onTap: () {
-            hideKeyboard(context);
-          },
-          child: child,
-        ),
-      ),
+      builder: (context, child) {
+        child = EasyLoading.init()(context, child);
+        child = Scaffold(
+          // 全局取消键盘
+          body: GestureDetector(
+            onTap: () {
+              hideKeyboard(context);
+            },
+            child: child,
+          ),
+        );
+        return child;
+      },
       // 注册路由表 MaterialApp方式，Getx也可以生效
       home: const HLLoginPage(),
       routes: {
@@ -82,29 +91,37 @@ class MyApp extends StatelessWidget {
         HLRoutes.guide: (context) => const HLGuidePage(),
         HLRoutes.main: (context) => TabBarPage(),
         HLRoutes.login: (context) => const HLLoginPage(),
+        HLRoutes.personal: (context) => HLPersonalPage(),
+        HLRoutes.set: (context) => HLSetPage(),
       },
-      // 注册路由表 Getx方式
-      // getPages: [
-      //   GetPage(
-      //     name: '/guide',
-      //     page: () => const HLGuidePage(),
-      //   ),
-      //   GetPage(
-      //     name: '/noti',
-      //     page: () => const HLNotiPage(),
-      //   ),
-      //   GetPage(
-      //     name: '/web',
-      //     page: () => const HLWebPage(),
-      //   ),
-      // ],
     );
   }
 }
 
+/// 全局隐藏键盘
 void hideKeyboard(BuildContext context) {
   FocusScopeNode currentFocus = FocusScope.of(context);
   if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
     FocusManager.instance.primaryFocus?.unfocus();
   }
+}
+
+/// loading全局设置
+void loadingConfig() {
+  EasyLoading.instance
+    ..displayDuration = const Duration(milliseconds: 2000)
+    ..indicatorType = EasyLoadingIndicatorType.fadingCircle
+    ..loadingStyle = EasyLoadingStyle.dark
+    ..indicatorSize = 45.0
+    ..radius = 10.0
+    ..progressColor = Colors.yellow
+    ..backgroundColor = Colors.green
+    ..indicatorColor = Colors.yellow
+    ..textColor = Colors.yellow
+    ..maskColor = Colors.blue.withOpacity(0.5)
+    ..userInteractions = false
+    ..dismissOnTap = false;
+}
+
+class CustomAnimation {
 }

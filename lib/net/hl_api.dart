@@ -5,6 +5,9 @@ class Api {
   ///登录
   static const String post_login = "user/login";
 
+  ///退出
+  static const String get_logout = "user/logout/json";
+
   ///首页banner
   static const String get_banners = "banner/json";
 

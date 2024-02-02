@@ -97,7 +97,7 @@ class _HLPopupWindowState extends State<HLPopupWindow> {
           widget.targetKey.currentContext?.findRenderObject() as RenderBox?;
       Offset localToGlobal = renderBox != null
           ? renderBox!.localToGlobal(Offset.zero)
-          : const Offset(0, 0); //targetWidget的坐标位置
+          : const Offset(0, 0); //targetWidget的坐标位置，左上角的点
       Size targetSize = renderBox != null
           ? renderBox!.size
           : const Size(0, 0); //targetWidget的size
@@ -445,8 +445,7 @@ class _ZoomInState extends State<ZoomInOffset>
         .animate(CurvedAnimation(curve: Curves.easeOut, parent: controller));
 
     // 不透明度
-    opacity = Tween<double>(begin: 0.0, end: 1).animate(
-        CurvedAnimation(parent: controller, curve: const Interval(0, 0.65)));
+    opacity = Tween<double>(begin: 0.0, end: 1).animate(controller);
 
     // ..addStatusListener((status) {
     //   if (status == AnimationStatus.completed) {

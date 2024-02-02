@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../../common/hl_app_theme.dart';
 import '../../custom/hl_business_view.dart';
 import '../../custom/hl_view_tool.dart';
-import '../personal//hl_personal_controller.dart';
+import '../personal/hl_personal_controller.dart';
 
 class HLPersonalPage extends StatelessWidget {
   // 第一种
@@ -17,6 +17,8 @@ class HLPersonalPage extends StatelessWidget {
     {"title": "设置", "image": "images/personal/wenjian.png"}
   ];
 
+  HLPersonalPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     var appTheme = Provider.of<AppTheme>(context);
@@ -28,7 +30,10 @@ class HLPersonalPage extends StatelessWidget {
             appTheme,
             i,
             itemList[i]["title"].toString(),
-            itemList[i]["image"].toString().toString()),
+            itemList[i]["image"].toString().toString(),
+            actionBlock: (index) {
+              personalController.selItem(index);
+            }),
         itemCount: itemList.length,
       ),
     );

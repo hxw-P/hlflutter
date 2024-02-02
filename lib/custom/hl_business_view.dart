@@ -245,7 +245,7 @@ class HLBusinessView {
     double leftGap = 10,
         double imgRightGap = 10,
         double rightGap = 10,
-    bool hasArrow = true,
+    bool hasArrow = true
   }) {
     return GestureDetector(
       child: Container(
@@ -285,7 +285,7 @@ class HLBusinessView {
       ),
       onTap: () {
         if (actionBlock != null) {
-          actionBlock();
+          actionBlock(index);
         }
       },
     );
