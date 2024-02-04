@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +31,9 @@ class _HLLoginPageState extends State<HLLoginPage> {
     var appTheme = Provider.of<AppTheme>(context);
 
     return Scaffold(
+      appBar: HLViewTool.appBar("", appTheme, enableBack: true, bottomLineHeight: 0, backAction: () {
+        loginController.backToMain();
+      }),
       backgroundColor: appTheme.backGroundColor,
       body: Stack(
         children: [

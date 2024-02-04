@@ -7,6 +7,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../../../common/hl_app_theme.dart';
 import '../../../common/hl_router.dart';
+import '../../../common/hl_user.dart';
 import '../../../net/hl_api.dart';
 import '../../../net/hl_cookie_handle.dart';
 import '../../../net/hl_http_client.dart';
@@ -18,9 +19,8 @@ class HLSetController extends GetxController {
     EasyLoading.show(status: 'loading...');
     HLHttpClient.getInstance().get(Api.get_logout,
         context: context, successCallBack: (data) async {
-          // 请求成功
-          // 清除cookie
-          await CookieHandle.delete();
+          // 退出登录
+          HLUser.loginOut();
           EasyLoading.dismiss();
           Fluttertoast.showToast(
             msg: '退出登录成功',
@@ -34,7 +34,6 @@ class HLSetController extends GetxController {
           // 跳转主页面
           Get.offAll(TabBarPage());
         }, errorCallBack: (code, msg) {
-          // 请求失败
           EasyLoading.dismiss();
           Fluttertoast.showToast(
             msg: msg,

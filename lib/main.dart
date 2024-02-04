@@ -8,9 +8,11 @@ import 'package:provider/provider.dart';
 import 'package:hlflutter/common/hl_app_theme.dart';
 
 import 'common/hl_router.dart';
+import 'common/hl_user.dart';
 import 'module/guide/hl_guide_page.dart';
 import 'module/home/page/hl_article_detail_page.dart';
 import 'module/home/page/hl_noti_page.dart';
+import 'module/launch/hl_launch_page.dart';
 import 'module/login/hl_login_page.dart';
 import 'module/personal/hl_personal_page.dart';
 import 'module/personal/set/hl_set_page.dart';
@@ -84,7 +86,7 @@ class MyApp extends StatelessWidget {
         return child;
       },
       // 注册路由表 MaterialApp方式，Getx也可以生效
-      home: const HLLoginPage(),
+      home: const HLLaunchPage(),
       routes: {
         HLRoutes.noti: (context) => const HLNotiPage(),
         HLRoutes.web: (context) => const HLWebPage(),
@@ -93,7 +95,8 @@ class MyApp extends StatelessWidget {
         HLRoutes.login: (context) => const HLLoginPage(),
         HLRoutes.personal: (context) => HLPersonalPage(),
         HLRoutes.set: (context) => HLSetPage(),
-      },
+    HLRoutes.launch: (context) => const HLLaunchPage(),
+    },
     );
   }
 }

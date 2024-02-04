@@ -14,11 +14,13 @@ class HLViewTool {
         Function? backAction,
         List<Widget>? actions,
         Widget? titleView,
-        bool? centerTitle = true}) {
+        double? bottomLineHeight,
+        Color? backgroundColor,
+        bool centerTitle = true}) {
     return AppBar(
       centerTitle: centerTitle,
-      backgroundColor: appTheme.themeColor,
-      elevation: 0.5,
+      backgroundColor: backgroundColor ?? appTheme.themeColor,
+      elevation: bottomLineHeight ?? Util.px(0.5),
       //底部线条
       title: titleView ??
           Text(title,

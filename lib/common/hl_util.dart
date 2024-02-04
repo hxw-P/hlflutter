@@ -7,6 +7,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hlflutter/custom/hxw_pop_handle.dart';
 import 'dart:io';
 
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'hl_constants.dart';
+
 ///工具类
 class Util {
   static MediaQueryData mediaQuery = MediaQueryData.fromWindow(ui.window);
@@ -208,5 +212,7 @@ class Util {
     }
 
   }
+
+
 
 }

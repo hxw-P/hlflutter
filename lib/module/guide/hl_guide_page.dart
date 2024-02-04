@@ -1,8 +1,11 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:hlflutter/common/hl_util.dart';
 import 'package:flutter/material.dart';
 import 'package:hlflutter/module/guide/hl_single_guide_page.dart';
 import 'package:hlflutter/custom/hl_view_tool.dart';
 
+import '../../common/hl_user.dart';
 import '../main/hl_tabBar_page.dart';
 import 'hl_indicator.dart';
 
@@ -73,11 +76,7 @@ class HLGuidePageState extends State<HLGuidePage> {
                       ],
                     ),
                     onTap: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => TabBarPage()),
-                        (route) => route == null,
-                      );
+                      Get.offAll(TabBarPage());
                     },
                   ),
                 )
