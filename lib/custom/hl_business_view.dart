@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:hlflutter/module/project/entity/hl_project_entity.dart';
 import '../common/hl_app_theme.dart';
 import '../common/hl_util.dart';
-import '../module/home/entity/hl_article_entity.dart';
+import '../module/entity/hl_article_entity.dart';
+import '../module/entity/hl_project_entity.dart';
 import 'hl_view_tool.dart';
 
 /// 文章列表操作

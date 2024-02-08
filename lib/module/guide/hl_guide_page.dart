@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:hlflutter/module/guide/hl_single_guide_page.dart';
 import 'package:hlflutter/custom/hl_view_tool.dart';
 
-import '../../common/hl_user.dart';
 import '../main/hl_tabBar_page.dart';
 import 'hl_indicator.dart';
 

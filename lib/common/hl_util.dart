@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:ffi';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,10 +8,12 @@ import 'package:flutter/cupertino.dart';
 import 'dart:ui' as ui show window;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hlflutter/custom/hxw_pop_handle.dart';
+import 'package:hlflutter/module/entity/hl_user_entity.dart';
 import 'dart:io';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../net/hl_cookie_handle.dart';
 import 'hl_constants.dart';
 
 ///工具类
@@ -32,6 +37,8 @@ class Util {
   static double bottomSafeHeight = mediaQuery.padding.bottom;
 
   static double dividerHeight = px(1);
+
+  static SharedPreferences? prefs;
 
   static updateStatusBarStyle(SystemUiOverlayStyle style) {
     SystemChrome.setSystemUIOverlayStyle(style);
@@ -213,6 +220,51 @@ class Util {
 
   }
 
+  /// 创建SharedPreferences实例
+  static Future sharedPreInstance() async {
+    prefs ??= await SharedPreferences.getInstance();
+  }
 
+  /// 是否登录
+  static bool isLogin() {
+    final bool isLogin = prefs!.getBool(HLConstants.isLogin) ?? false;
+    return isLogin;
+  }
+
+  /// 登录
+  static loginIn() {
+    prefs!.setBool(HLConstants.isLogin, true);
+  }
+
+  /// 登出
+  static loginOut() async {
+    // 清除cookie缓存
+    await CookieHandle.delete();
+    prefs!.setBool(HLConstants.isLogin, false);
+  }
+
+  /// 是否显示引导页
+  static bool isShowGuide() {
+    final bool isShowGuide = prefs!.getBool(HLConstants.isShowGuide) ?? false;
+    return isShowGuide;
+  }
+
+  /// 设置显示引导页
+  static showGuide() {
+    prefs!.setBool(HLConstants.isShowGuide, true);
+  }
+
+  /// 存储用户信息
+  static setUserInfo(Map map) async {
+    prefs!.setString(HLConstants.userInfo, json.encode(map));
+  }
+
+  /// 获取用户信息
+  static HLUserEntity getUserInfo() {
+    String jsonStr = prefs!.getString(HLConstants.userInfo) ?? "";
+    // HLUserEntity entity =  HLUserEntity().fromMap(json.decode(jsonStr) as Map<String, dynamic>);
+    HLUserEntity entity =  HLUserEntity(userName: 'ff', email: 'fs');
+    return entity;
+  }
 
 }

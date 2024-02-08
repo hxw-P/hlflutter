@@ -14,7 +14,7 @@ import '../../custom/hl_view_tool.dart';
 import '../../db/hl_db_manager.dart';
 import '../../net/hl_api.dart';
 import '../../net/hl_http_client.dart';
-import 'entity/hl_project_entity.dart';
+import '../entity/hl_project_entity.dart';
 
 class HLProjectPage extends StatefulWidget {
 

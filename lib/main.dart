@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:hlflutter/common/hl_app_theme.dart';
 
 import 'common/hl_router.dart';
-import 'common/hl_user.dart';
 import 'module/guide/hl_guide_page.dart';
 import 'module/home/page/hl_article_detail_page.dart';
 import 'module/home/page/hl_noti_page.dart';

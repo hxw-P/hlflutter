@@ -21,8 +21,8 @@ import '../../../custom/popup/hl_popupwindow.dart';
 import '../../../db/hl_db_manager.dart';
 import '../../../net/hl_api.dart';
 import '../../../net/hl_http_client.dart';
-import '../entity/hl_article_entity.dart';
-import '../entity/hl_banner_entity.dart';
+import '../../entity/hl_banner_entity.dart';
+import '../../entity/hl_article_entity.dart';
 import 'hl_article_detail_page.dart';
 
 class HLHomePage extends StatefulWidget {

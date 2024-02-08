@@ -7,7 +7,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
 import '../../../common/hl_app_theme.dart';
 import '../../../common/hl_router.dart';
-import '../../../common/hl_user.dart';
+import '../../../common/hl_util.dart';
 import '../../../net/hl_api.dart';
 import '../../../net/hl_cookie_handle.dart';
 import '../../../net/hl_http_client.dart';
@@ -20,7 +20,7 @@ class HLSetController extends GetxController {
     HLHttpClient.getInstance().get(Api.get_logout,
         context: context, successCallBack: (data) async {
           // 退出登录
-          HLUser.loginOut();
+          Util.loginOut();
           EasyLoading.dismiss();
           Fluttertoast.showToast(
             msg: '退出登录成功',

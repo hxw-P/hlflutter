@@ -5,7 +5,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'dart:io';
 import '../../../common/hl_app_theme.dart';
 import '../../../custom/hl_view_tool.dart';
-import '../entity/hl_article_entity.dart';
+import '../../entity/hl_article_entity.dart';
 import 'dart:async';
 
 class ArticleDetailPage extends StatefulWidget {
