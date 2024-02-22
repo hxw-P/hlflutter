@@ -13,6 +13,7 @@ import 'module/home/page/hl_article_detail_page.dart';
 import 'module/home/page/hl_noti_page.dart';
 import 'module/launch/hl_launch_page.dart';
 import 'module/login/hl_login_page.dart';
+import 'module/personal/collect/hl_collect_page.dart';
 import 'module/personal/hl_personal_page.dart';
 import 'module/personal/set/hl_set_page.dart';
 
@@ -94,7 +95,8 @@ class MyApp extends StatelessWidget {
         HLRoutes.login: (context) => const HLLoginPage(),
         HLRoutes.personal: (context) => HLPersonalPage(),
         HLRoutes.set: (context) => HLSetPage(),
-    HLRoutes.launch: (context) => const HLLaunchPage(),
+        HLRoutes.collect: (context) => HLCollectPage(),
+        HLRoutes.launch: (context) => const HLLaunchPage(),
     },
     );
   }

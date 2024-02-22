@@ -7,4 +7,5 @@ abstract class HLRoutes {
   static const personal = '/personal';
   static const set = '/set';
   static const launch = '/launch';
+  static const collect = '/collect';
 }

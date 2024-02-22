@@ -255,15 +255,14 @@ class Util {
   }
 
   /// 存储用户信息
-  static setUserInfo(Map map) async {
+  static setUserInfo(Map map) {
     prefs!.setString(HLConstants.userInfo, json.encode(map));
   }
 
   /// 获取用户信息
   static HLUserEntity getUserInfo() {
     String jsonStr = prefs!.getString(HLConstants.userInfo) ?? "";
-    // HLUserEntity entity =  HLUserEntity().fromMap(json.decode(jsonStr) as Map<String, dynamic>);
-    HLUserEntity entity =  HLUserEntity(userName: 'ff', email: 'fs');
+    HLUserEntity entity =  HLUserEntity().fromMap(json.decode(jsonStr) as Map<String, dynamic>);
     return entity;
   }
 

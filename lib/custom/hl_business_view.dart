@@ -5,6 +5,7 @@ import '../common/hl_app_theme.dart';
 import '../common/hl_util.dart';
 import '../module/entity/hl_article_entity.dart';
 import '../module/entity/hl_project_entity.dart';
+import '../module/entity/hl_user_entity.dart';
 import 'hl_view_tool.dart';
 
 /// 文章列表操作
@@ -88,7 +89,7 @@ class HLBusinessView {
                         ),
                       ),
                       // 描述
-                      Row(
+                      article.envelopePic!.isNotEmpty ? Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
@@ -96,10 +97,32 @@ class HLBusinessView {
                             width: Util.px(50),
                             child: FadeInImage.assetNetwork(
                                 placeholder:
-                                    "images/common/img_placeholder.png",
+                                "images/common/img_placeholder.png",
                                 fit: BoxFit.fitWidth,
                                 image: article.envelopePic!),
                           ),
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                  Util.px(5), 0, Util.px(10), 0),
+                              child: Text(
+                                "${article.desc}",
+                                maxLines: 2,
+                                textAlign: TextAlign.left,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  decoration: TextDecoration.none,
+                                  fontSize: 15,
+                                  color: appTheme.subTitleColor,
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ) :
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
                           Expanded(
                             child: Padding(
                               padding: EdgeInsets.fromLTRB(
@@ -241,29 +264,36 @@ class HLBusinessView {
     String title,
     String iconPath, {
     Function? actionBlock,
-    double height = 40,
-    double leftGap = 10,
-        double imgRightGap = 10,
-        double rightGap = 10,
-    bool hasArrow = true
-  }) {
+    double height = 0,
+        double imgRightGap = 0,
+        Color color = Colors.white,
+        EdgeInsetsGeometry? marign,
+        bool hasArrow = true,
+        double circular = 0
+      }) {
     return GestureDetector(
       child: Container(
-        margin: EdgeInsets.fromLTRB(leftGap, 0, rightGap, 0),
-        height: height,
-        color: Colors.white,
+        //超出部分，可裁剪
+          clipBehavior: Clip.hardEdge,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(circular),
+            color: color
+          ),
+        margin: marign??EdgeInsets.fromLTRB(Util.px(10), Util.px(5), Util.px(10), Util.px(5)),
+        height: height == 0 ? Util.px(40) : height,
         child: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  height: height - Util.px(1),
+                  height: height == 0 ? Util.px(40) - Util.px(1) : height - Util.px(1),
                   child: Row(
                     children: [
-                      Image.asset(iconPath, width: Util.px(20), height: Util.px(20)),
+                      Padding(padding: EdgeInsets.fromLTRB(Util.px(10), 0, 0, 0),
+                      child: Image.asset(iconPath, width: Util.px(20), height: Util.px(20))),
                       Container(
-                        margin: EdgeInsets.fromLTRB(imgRightGap, 0, 0, 0),
+                        margin: EdgeInsets.fromLTRB(imgRightGap == 0 ? Util.px(10) : imgRightGap, 0, 0, 0),
                         child: HLViewTool.createText(
                             text: title,
                             color: appTheme.titleColor,
@@ -290,4 +320,53 @@ class HLBusinessView {
       },
     );
   }
+
+  /// 用户头像
+  static personalHeader(HLUserEntity userInfo, AppTheme appTheme) {
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(Util.px(4)),
+          color: appTheme.themeColor
+      ),
+      margin: EdgeInsets.fromLTRB(Util.px(10), Util.px(5), Util.px(10), Util.px(5)),
+      height: Util.px(130+30),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(Util.px(10), Util.px(10+30), 0, 0),
+            width: 90,
+            height: 90,
+            //超出部分，可裁剪
+            clipBehavior: Clip.hardEdge,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(45),
+            ),
+            child: Image.asset('images/personal/head.png',
+              fit: BoxFit.fill,
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                  padding: EdgeInsets.fromLTRB(Util.px(10), Util.px(10+30), 0, 0),
+                  child: HLViewTool.createText(
+                      text: "${userInfo.userName}",
+                      color: appTheme.titleColor,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold)),
+              Padding(padding: EdgeInsets.fromLTRB(Util.px(10), Util.px(10), 0, 0),
+                child: HLViewTool.createText(
+                    text: userInfo.email!.isNotEmpty ? "${userInfo.email}" : "1375166613@qq.com",
+                    color: appTheme.subTitleDarkColor,
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal),)
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
 }

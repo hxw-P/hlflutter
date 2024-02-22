@@ -6,6 +6,7 @@ import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_swiper_null_safety/flutter_swiper_null_safety.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -250,8 +251,15 @@ class _HLHomePageState extends State<HLHomePage>
                             goArticleDetail(i - 1);
                           }
                           else if (action == ArticleAction.collect || action == ArticleAction.cancelCollect) {
-                            // 收藏、取消收藏文章
-                            collect(articles[i - 1]);
+                            HLArticleEntity articleEntity = articles[i - 1];
+                            if (articleEntity.collect == true) {
+                              // 取消收藏文章
+                              unCollect(i - 1);
+                            }
+                            else {
+                              // 收藏文章
+                              collect(i - 1);
+                            }
                           }
                       }),
                 // 高度设置就是固定的了
@@ -431,47 +439,35 @@ class _HLHomePageState extends State<HLHomePage>
   }
 
   ///收藏
-  collect(HLArticleEntity articleEntity) {
+  collect(int idx) {
+    HLArticleEntity articleEntity = articles[idx];
+    EasyLoading.show(status: '请求中...');
     HLHttpClient.getInstance().post("${Api.post_collect_article}${articleEntity.id}/json", context: context,
         successCallBack: (data) async {
-          // List responseJson = data;
-          // if (responseJson.isNotEmpty) {
-          //   await handleResponseJson(HLBannerEntity(), responseJson).then((value) {
-          //     banners = value!.map((e) {
-          //       HLBannerEntity entity = e as HLBannerEntity;
-          //       return entity;
-          //     }).toList();
-          //   });
-          //   print("net-get_banners:$banners");
-          //   if (articles.isNotEmpty&&banners.isNotEmpty) {
-          //     setState(() {});
-          //   }
-          // }
+          EasyLoading.dismiss();
+          articleEntity.collect = true;
+          articles.replaceRange(idx, idx+1, [articleEntity]);
+          setState(() {});
         }, errorCallBack: (code, msg) {
           // 请求失败
+          EasyLoading.dismiss();
         });
   }
 
   ///取消收藏
-  unCollect() {
-    // HLHttpClient.getInstance().post("${Api.post_collect_inner_article}$currentPage/json", context: context,
-    //     successCallBack: (data) async {
-    //       List responseJson = data;
-    //       if (responseJson.isNotEmpty) {
-    //         await handleResponseJson(HLBannerEntity(), responseJson).then((value) {
-    //           banners = value!.map((e) {
-    //             HLBannerEntity entity = e as HLBannerEntity;
-    //             return entity;
-    //           }).toList();
-    //         });
-    //         print("net-get_banners:$banners");
-    //         if (articles.isNotEmpty&&banners.isNotEmpty) {
-    //           setState(() {});
-    //         }
-    //       }
-    //     }, errorCallBack: (code, msg) {
-    //       // 请求失败
-    //     });
+  unCollect(int idx) {
+    HLArticleEntity articleEntity = articles[idx];
+    EasyLoading.show(status: '请求中...');
+    HLHttpClient.getInstance().post("${Api.post_uncollect_article}${articleEntity.id}/json", context: context,
+        successCallBack: (data) async {
+          EasyLoading.dismiss();
+          articleEntity.collect = false;
+          articles.replaceRange(idx, idx+1, [articleEntity]);
+          setState(() {});
+        }, errorCallBack: (code, msg) {
+          // 请求失败
+          EasyLoading.dismiss();
+        });
   }
 
 }

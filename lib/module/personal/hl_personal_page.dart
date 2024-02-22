@@ -24,46 +24,27 @@ class HLPersonalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appTheme = Provider.of<AppTheme>(context);
-    HLUserEntity userInfo = Util.setUserInfo({});
+    HLUserEntity userInfo = Util.getUserInfo();
     return Scaffold(
       backgroundColor: appTheme.backGroundColor,
       body: ListView.builder(
         itemBuilder: (c, i) => i == 0
-            ? personalHeader(userInfo, appTheme)
+            ? HLBusinessView.personalHeader(userInfo, appTheme)
             : HLBusinessView.commonRow(
-                context,
-                appTheme,
-                i,
-                itemList[i]["title"].toString(),
-                itemList[i]["image"].toString().toString(),
-                actionBlock: (index) {
-                personalController.selItem(index);
-              }),
-        itemCount: itemList.length,
+            context,
+            appTheme,
+            i - 1,
+            itemList[i - 1]["title"].toString(),
+            itemList[i - 1]["image"].toString().toString(),
+            circular: Util.px(4),
+            color: appTheme.themeColor,
+            actionBlock: (index) {
+              personalController.selItem(index);
+            }),
+        itemCount: itemList.length + 1,
       ),
     );
   }
 
-  personalHeader(HLUserEntity userInfo, AppTheme appTheme) {
-    return Row(
-      children: [
-        Image.asset('images/personal/head.png',
-            width: Util.px(20), height: Util.px(20)),
-        Column(
-          children: [
-            HLViewTool.createText(
-                text: "${userInfo.userName}",
-                color: appTheme.titleColor,
-                fontSize: 16,
-                fontWeight: FontWeight.bold),
-            HLViewTool.createText(
-                text: "${userInfo.email}",
-                color: appTheme.subTitleDarkColor,
-                fontSize: 14,
-                fontWeight: FontWeight.normal)
-          ],
-        )
-      ],
-    );
-  }
+
 }

@@ -13,7 +13,7 @@ class AppTheme with ChangeNotifier {
   Color _appbarBtnColor = Util.rgbColor('#444444');
 
   ///BottomAppBar按钮选中文字颜色
-  Color _bottomAppbarSelColor = Color.fromRGBO(35, 135, 211, 1);
+  Color _bottomAppbarSelColor = const Color.fromRGBO(35, 135, 211, 1);
 
   ///BottomAppBar按钮正常文字颜色
   Color _bottomAppbarNorColor = Colors.black;
@@ -28,10 +28,7 @@ class AppTheme with ChangeNotifier {
   Color _grayBackColor = Util.rgbColor('#F2F2F2');
 
   ///整体内容背景色
-  Color _backGroundColor = Util.rgbColor('#FFFFFF');
-
-  ///整体灰色内容背景色
-  Color _grayBackGroundColor = Util.rgbColor('#F2F2F2');
+  Color _backGroundColor = Util.rgbColor('#F2F2F2');
 
   ///占位文字颜色
   Color _placeHolderColor = Util.rgbColor('#999999');
@@ -81,8 +78,6 @@ class AppTheme with ChangeNotifier {
 
   get backGroundColor => _backGroundColor;
 
-  get grayBackGroundColor => _grayBackGroundColor;
-
   get placeHolderColor => _placeHolderColor;
 
   get titleColor => _titleColor;
@@ -104,26 +99,25 @@ class AppTheme with ChangeNotifier {
 
   void updateColors(bool isDark) {
     var color = isDark ? darkColor : normalColor;
-    this._themeColor = color['themeColor']!;
-    this._appbarTitleColor = color['appbarTitleColor']!;
-    this._appbarBtnColor = color['appbarBtnColor']!;
-    this._bottomAppbarSelColor = color['bottomAppbarSelColor']!;
-    this._bottomAppbarNorColor = color['bottomAppbarNorColor']!;
-    this._borderColor = color['borderColor']!;
-    this._backColor = color['backColor']!;
-    this._grayBackColor = color['grayBackColor']!;
-    this._backGroundColor = color['backGroundColor']!;
-    this._grayBackGroundColor = color['grayBackGroundColor']!;
-    this._placeHolderColor = color['placeHolderColor']!;
-    this._titleColor = color['titleColor']!;
-    this._subTitleColor = color['subTitleColor']!;
-    this._subTitleDarkColor = color['subTitleDarkColor']!;
-    this._bottomDividerColor = color['bottomDividerColor']!;
-    this._dividerColor = color['dividerColor']!;
-    this._switchColor = color['switchColor']!;
-    this._btnBackColor = color['btnBackColor']!;
-    this._toastBackColor = color['toastBackColor']!;
-    this._toastTitleColor = color['toastTitleColor']!;
+    _themeColor = color['themeColor']!;
+    _appbarTitleColor = color['appbarTitleColor']!;
+    _appbarBtnColor = color['appbarBtnColor']!;
+    _bottomAppbarSelColor = color['bottomAppbarSelColor']!;
+    _bottomAppbarNorColor = color['bottomAppbarNorColor']!;
+    _borderColor = color['borderColor']!;
+    _backColor = color['backColor']!;
+    _grayBackColor = color['grayBackColor']!;
+    _backGroundColor = color['backGroundColor']!;
+    _placeHolderColor = color['placeHolderColor']!;
+    _titleColor = color['titleColor']!;
+    _subTitleColor = color['subTitleColor']!;
+    _subTitleDarkColor = color['subTitleDarkColor']!;
+    _bottomDividerColor = color['bottomDividerColor']!;
+    _dividerColor = color['dividerColor']!;
+    _switchColor = color['switchColor']!;
+    _btnBackColor = color['btnBackColor']!;
+    _toastBackColor = color['toastBackColor']!;
+    _toastTitleColor = color['toastTitleColor']!;
     notifyListeners();
   }
 
@@ -131,13 +125,12 @@ class AppTheme with ChangeNotifier {
     'themeColor': Colors.white,
     'appbarTitleColor': Colors.black,
     'appbarBtnColor': Colors.black,
-    'bottomAppbarSelColor': Color.fromRGBO(35, 135, 211, 1),
+    'bottomAppbarSelColor': const Color.fromRGBO(35, 135, 211, 1),
     'bottomAppbarNorColor': Colors.black,
     'borderColor': Util.rgbColor('#1F2833', alpha: 0.2),
     'backColor': Colors.white,
     'grayBackColor': Util.rgbColor('#F2F2F2'),
-    'backGroundColor': Util.rgbColor('#FFFFFF'),
-    'grayBackGroundColor': Util.rgbColor('#F2F2F2'),
+    'backGroundColor': Util.rgbColor('#F2F2F2'),
     'placeHolderColor': Util.rgbColor('#999999'),
     'titleColor': Util.rgbColor('#2E3033'),
     'subTitleDarkColor': Util.rgbColor('#7E838E'),
@@ -151,22 +144,21 @@ class AppTheme with ChangeNotifier {
   };
 
   final Map<String, Color> darkColor = {
-    'themeColor': Color(0xff191919),
-    'appbarTitleColor': Color(0xff8f8f8f),
-    'appbarBtnColor': Color(0xff8f8f8f),
-    'bottomAppbarSelColor': Color.fromRGBO(35, 135, 211, 1),
-    'bottomAppbarNorColor': Color(0xff606060),
+    'themeColor': Colors.white,
+    'appbarTitleColor': const Color(0xff8f8f8f),
+    'appbarBtnColor': const Color(0xff8f8f8f),
+    'bottomAppbarSelColor': const Color.fromRGBO(35, 135, 211, 1),
+    'bottomAppbarNorColor': const Color(0xff606060),
     'borderColor': Util.rgbColor('#DDDDDD'),
-    'backColor': Color(0xff191919),
-    'grayBackColor': Color(0xff666666),
+    'backColor': const Color(0xff191919),
+    'grayBackColor': const Color(0xff666666),
     'backGroundColor': Colors.black,
-    'grayBackGroundColor': Colors.black,
     'placeHolderColor': Util.rgbColor('#999999'),
-    'titleColor': Color(0xff8f8f8f),
-    'subTitleColor': Color(0xff606060),
+    'titleColor': const Color(0xff8f8f8f),
+    'subTitleColor': const Color(0xff606060),
     'subTitleDarkColor': Colors.black38,
     'bottomDividerColor': Colors.black38,
-    'dividerColor': Color(0xff666666),
+    'dividerColor': const Color(0xff666666),
     'switchColor': Colors.green,
     'btnBackColor': Util.rgbColor('#2E6BE5'),
     'toastBackColor': Util.rgbColor('#FF4500'),
