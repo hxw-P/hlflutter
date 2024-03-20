@@ -35,7 +35,7 @@ class HLPersonalPage extends StatelessWidget {
             appTheme,
             i - 1,
             itemList[i - 1]["title"].toString(),
-            itemList[i - 1]["image"].toString().toString(),
+            itemList[i - 1]["image"].toString(),
             circular: Util.px(4),
             color: appTheme.themeColor,
             actionBlock: (index) {

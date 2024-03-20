@@ -269,7 +269,8 @@ class HLBusinessView {
         Color color = Colors.white,
         EdgeInsetsGeometry? marign,
         bool hasArrow = true,
-        double circular = 0
+        double circular = 0,
+        bool isTopFirst = false,
       }) {
     return GestureDetector(
       child: Container(
@@ -279,7 +280,7 @@ class HLBusinessView {
             borderRadius: BorderRadius.circular(circular),
             color: color
           ),
-        margin: marign??EdgeInsets.fromLTRB(Util.px(10), Util.px(5), Util.px(10), Util.px(5)),
+        margin: marign??EdgeInsets.fromLTRB(Util.px(10), isTopFirst == true ? Util.px(10) : Util.px(5), Util.px(10), Util.px(5)),
         height: height == 0 ? Util.px(40) : height,
         child: Column(
           children: [

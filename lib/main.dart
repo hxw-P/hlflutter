@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
       home: const HLLaunchPage(),
       routes: {
         HLRoutes.noti: (context) => const HLNotiPage(),
-        HLRoutes.web: (context) => const HLWebPage(),
+        HLRoutes.web: (context) => HLWebPage(),
         HLRoutes.guide: (context) => const HLGuidePage(),
         HLRoutes.main: (context) => TabBarPage(),
         HLRoutes.login: (context) => const HLLoginPage(),

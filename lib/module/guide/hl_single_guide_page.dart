@@ -7,8 +7,8 @@ import '../../common/hl_util.dart';
 import 'package:hlflutter/custom/hl_view_tool.dart';
 
 class HLSingleGuidePage extends StatefulWidget {
-  late String title = "";
-  late String subTitle = "";
+  String title = "";
+  String subTitle = "";
   late String imgPath;
 
   HLSingleGuidePage({Key? key, required this.title, required this.subTitle, required this.imgPath}) : super(key: key);

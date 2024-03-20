@@ -13,6 +13,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hlflutter/common/hl_native_handle.dart';
 import 'package:hlflutter/custom/hl_view_tool.dart';
 import 'package:hlflutter/db/hl_db_base_entity.dart';
+import 'package:hlflutter/module/common/hl_web_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../common/hl_app_theme.dart';
@@ -139,6 +140,7 @@ class _HLHomePageState extends State<HLHomePage>
             // ),
             popWidget: HLViewTool.createList(appTheme, popItemList,
                 width: 150, height: 120, itemHeight: 40, actionBlock: (index) {
+              print('tap pop item');
               Navigator.pop(context);
               HLNativeHandle.exchangeWithNative(
                   "push",
@@ -280,14 +282,19 @@ class _HLHomePageState extends State<HLHomePage>
   /// 点击跳转文章详情
   goArticleDetail(int index) {
     //Getx 方式跳转
-    Get.toNamed("/web", arguments: {
-      // 传参
-      "url": articles[index].link ?? "",
-      "title": articles[index].title ?? ""
-    })?.then((value) {
-      // 回参
-      print("$value");
-    });
+    // Get.toNamed("/web", arguments: {
+    //   // 传参
+    //   "url": articles[index].link ?? "",
+    //   "title": articles[index].title ?? "",
+    // })?.then((value) {
+    //   // 回参
+    //   print("---$value");
+    // });
+    // 路由方式没有办法直接传对象，使用普通实例方式
+    Navigator.push( //跳转到第二个界面
+      context,
+      MaterialPageRoute(builder: (context) => HLWebPage(articleEntity: articles[index])),
+    );
   }
 
   /// 点击跳转banner详情
@@ -299,7 +306,7 @@ class _HLHomePageState extends State<HLHomePage>
       "title": banners[index].title ?? ""
     })?.then((value) {
       // 回参
-      print("$value");
+      print("---$value");
     });
   }
 
@@ -446,7 +453,6 @@ class _HLHomePageState extends State<HLHomePage>
         successCallBack: (data) async {
           EasyLoading.dismiss();
           articleEntity.collect = true;
-          articles.replaceRange(idx, idx+1, [articleEntity]);
           setState(() {});
         }, errorCallBack: (code, msg) {
           // 请求失败
@@ -462,7 +468,6 @@ class _HLHomePageState extends State<HLHomePage>
         successCallBack: (data) async {
           EasyLoading.dismiss();
           articleEntity.collect = false;
-          articles.replaceRange(idx, idx+1, [articleEntity]);
           setState(() {});
         }, errorCallBack: (code, msg) {
           // 请求失败

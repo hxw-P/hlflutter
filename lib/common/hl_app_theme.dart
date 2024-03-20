@@ -6,6 +6,9 @@ class AppTheme with ChangeNotifier {
   ///主题颜色/AppBar背景色
   Color _themeColor = Colors.white;
 
+  ///副主题颜色/按钮、进度条、tabbar按钮选中颜色等
+  Color _subThemeColor = const Color.fromRGBO(35, 135, 211, 1);
+
   ///AppBar标题颜色
   Color _appbarTitleColor = Util.rgbColor('#A0A0A0');
 
@@ -62,6 +65,8 @@ class AppTheme with ChangeNotifier {
 
   get themeColor => _themeColor;
 
+  get subThemeColor => _subThemeColor;
+
   get appbarTitleColor => _appbarTitleColor;
 
   get appbarBtnColor => _appbarBtnColor;
@@ -100,6 +105,7 @@ class AppTheme with ChangeNotifier {
   void updateColors(bool isDark) {
     var color = isDark ? darkColor : normalColor;
     _themeColor = color['themeColor']!;
+    _subThemeColor = color['subThemeColor']!;
     _appbarTitleColor = color['appbarTitleColor']!;
     _appbarBtnColor = color['appbarBtnColor']!;
     _bottomAppbarSelColor = color['bottomAppbarSelColor']!;
@@ -123,6 +129,7 @@ class AppTheme with ChangeNotifier {
 
   final Map<String, Color> normalColor = {
     'themeColor': Colors.white,
+    'subThemeColor': Color.fromRGBO(35, 135, 211, 1),
     'appbarTitleColor': Colors.black,
     'appbarBtnColor': Colors.black,
     'bottomAppbarSelColor': const Color.fromRGBO(35, 135, 211, 1),
@@ -145,6 +152,7 @@ class AppTheme with ChangeNotifier {
 
   final Map<String, Color> darkColor = {
     'themeColor': Colors.white,
+    'subThemeColor': Color.fromRGBO(35, 135, 211, 1),
     'appbarTitleColor': const Color(0xff8f8f8f),
     'appbarBtnColor': const Color(0xff8f8f8f),
     'bottomAppbarSelColor': const Color.fromRGBO(35, 135, 211, 1),

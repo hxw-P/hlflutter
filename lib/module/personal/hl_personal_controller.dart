@@ -30,6 +30,14 @@ class HLPersonalController extends GetxController {
     }
     else if (index == 2) {
       // 关于我们
+      Get.toNamed("/web", arguments: {
+        // 传参
+        "url": "https://developer.huawei.com/consumer/cn/",
+        "title": "关于我们"
+      })?.then((value) {
+        // 回参
+        print("$value");
+      });
     }
     else if (index == 3) {
       // 设置

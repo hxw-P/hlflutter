@@ -149,6 +149,7 @@ class HLViewTool {
                         ),
                         Expanded(
                           child: Container(
+                            color: Colors.white, // 点击事件设置背景色后才会在空白处也生效
                             padding: textPadding ??
                                 EdgeInsets.fromLTRB(Util.px(5), 0, Util.px(5), 0),
                             alignment: Alignment.centerLeft,

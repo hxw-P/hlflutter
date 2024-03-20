@@ -46,4 +46,8 @@ class HLSetController extends GetxController {
           );
         });
   }
+
+  back() {
+    Get.back();
+  }
 }

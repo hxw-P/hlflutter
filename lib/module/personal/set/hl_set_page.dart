@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common/hl_app_theme.dart';
 import '../../../custom/hl_business_view.dart';
+import '../../../custom/hl_view_tool.dart';
 import 'hl_set_controller.dart';
 
 class HLSetPage extends StatelessWidget {
@@ -22,6 +23,9 @@ class HLSetPage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appTheme = Provider.of<AppTheme>(context);
     return Scaffold(
+      appBar: HLViewTool.appBar("设置", appTheme, enableBack: true, backAction: () {
+        setController.back();
+      }),
       backgroundColor: appTheme.backGroundColor,
       body: ListView.builder(
         itemBuilder: (c, i) => HLBusinessView.commonRow(
@@ -30,6 +34,7 @@ class HLSetPage extends StatelessWidget {
             i,
             itemList[i]["title"].toString(),
             itemList[i]["image"].toString().toString(),
+          isTopFirst: true,
           actionBlock: (index) {
             setController.logout(context, appTheme);
           }),

@@ -1,6 +1,5 @@
 import 'package:hlflutter/db/hl_db_base_entity.dart';
 
-///文章model
 class HLArticleEntity extends HLDbBaseEntity {
   int? id;
   String? title;
