@@ -18,30 +18,4 @@ class HLWebController extends GetxController {
     progress.value = value/100;
   }
 
-  ///收藏
-  collect(HLArticleEntity articleEntity) {
-    EasyLoading.show(status: '请求中...');
-    HLHttpClient.getInstance().post("${Api.post_collect_article}${articleEntity.id}/json", context: context,
-        successCallBack: (data) async {
-          EasyLoading.dismiss();
-          articleEntity.collect = true;
-        }, errorCallBack: (code, msg) {
-          // 请求失败
-          EasyLoading.dismiss();
-        });
-  }
-
-  ///取消收藏
-  unCollect(HLArticleEntity articleEntity) {
-    EasyLoading.show(status: '请求中...');
-    HLHttpClient.getInstance().post("${Api.post_uncollect_article}${articleEntity.id}/json", context: context,
-        successCallBack: (data) async {
-          EasyLoading.dismiss();
-          articleEntity.collect = false;
-        }, errorCallBack: (code, msg) {
-          // 请求失败
-          EasyLoading.dismiss();
-        });
-  }
-
 }

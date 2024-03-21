@@ -17,8 +17,7 @@ class HLSetController extends GetxController {
 
   logout(BuildContext context, AppTheme appTheme) {
     EasyLoading.show(status: 'loading...');
-    HLHttpClient.getInstance().get(Api.get_logout,
-        context: context, successCallBack: (data) async {
+    HLHttpClient.getInstance().get(Api.get_logout, successCallBack: (data) async {
           // 退出登录
           Util.loginOut();
           EasyLoading.dismiss();

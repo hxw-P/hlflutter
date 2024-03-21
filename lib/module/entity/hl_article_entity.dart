@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:hlflutter/db/hl_db_base_entity.dart';
 
 class HLArticleEntity extends HLDbBaseEntity {
@@ -11,7 +12,8 @@ class HLArticleEntity extends HLDbBaseEntity {
   int? zan;
   int? type;
   bool? fresh;
-  bool? collect;
+  // 单独观察是否收藏，使用obx可以自动更新收藏按钮图标，同时传递model给web页面，在web页面操作收藏，也会自动更新首页和web页面右上角的收藏图标
+  RxBool collect = false.obs;
   String? niceDate;
   String? envelopePic;
   String? superChapterName;
@@ -28,7 +30,7 @@ class HLArticleEntity extends HLDbBaseEntity {
     this.zan,
     this.type,
     this.fresh,
-    this.collect,
+    required this.collect,
     this.niceDate,
     this.envelopePic,
     this.superChapterName,
@@ -65,7 +67,7 @@ class HLArticleEntity extends HLDbBaseEntity {
     zan: map['zan'],
     type: map['type'],
     fresh: map['fresh'],
-    collect: map['collect'],
+    collect: (map['collect'] as bool).obs,
     niceDate: map['niceDate'],
     envelopePic: map['envelopePic'],
     superChapterName: map['superChapterName'],

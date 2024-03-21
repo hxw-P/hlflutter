@@ -157,8 +157,7 @@ class _HLProjectPageState extends State<HLProjectPage> with AutomaticKeepAliveCl
   }
 
   getProjects() {
-    HLHttpClient.getInstance().get("${Api.get_listprojects}$currentPage/json",
-        context: context, successCallBack: (data) {
+    HLHttpClient.getInstance().get("${Api.get_listprojects}$currentPage/json", successCallBack: (data) {
           List responseJson = data["datas"];
           print("获取项目列表 == $responseJson");
           List<HLProjectEntity> newProjects = responseJson.map((m) {

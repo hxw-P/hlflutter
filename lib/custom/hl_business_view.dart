@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import '../common/hl_app_theme.dart';
 import '../common/hl_util.dart';
 import '../module/entity/hl_article_entity.dart';
@@ -9,7 +10,7 @@ import '../module/entity/hl_user_entity.dart';
 import 'hl_view_tool.dart';
 
 /// 文章列表操作
-enum ArticleAction { detail, collect, cancelCollect }
+enum ArticleAction { detail, collect}
 
 class HLBusinessView {
   /// 文章列表cell
@@ -54,13 +55,13 @@ class HLBusinessView {
                     padding: EdgeInsets.fromLTRB(
                         Util.px(10), Util.px(5), Util.px(10), Util.px(5)),
                     height: Util.px(30),
-                    child: article.collect == true ? Image.asset("images/home/list_collect_sel.png")
-                        : Image.asset("images/home/list_collect_nor.png"),
+                    child: Obx(()=> article.collect.value == true ? Image.asset("images/home/list_collect_sel.png")
+                        : Image.asset("images/home/list_collect_nor.png")),
                   ),
                   onTap: () {
                     print("${article.collect}点击收藏");
                     if (actionBlock != null) {
-                      actionBlock(article.collect == true ? ArticleAction.cancelCollect : ArticleAction.collect);
+                      actionBlock(ArticleAction.collect);
                     }
                   },
                 )

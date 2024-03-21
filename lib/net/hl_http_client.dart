@@ -83,7 +83,6 @@ class HLHttpClient {
       {params,
       options,
       cancelToken,
-      required BuildContext context,
       Function? successCallBack,
       Function? errorCallBack}) async {
     var response;
@@ -93,7 +92,7 @@ class HLHttpClient {
       response = await dio.get(url,
           queryParameters: params, options: options, cancelToken: cancelToken);
     } on DioError catch (e) {
-      formatError(e, context, errorCallBack);
+      formatError(e, errorCallBack);
     }
     if (null != response.data) {
       ResponseEntity responseEntity =
@@ -106,9 +105,9 @@ class HLHttpClient {
             break;
           case Code.NOT_LOGIN_IN:
             //未登录
-            ClientHandle.handleError(responseEntity.errorMsg, context);
+            ClientHandle.handleError(responseEntity.errorMsg);
             errorCallBack!(responseEntity.errorCode, responseEntity.errorMsg);
-            if (null != context) {
+            // if (null != context) {
               // Navigator.of(context).push(
               //   MaterialPageRoute(
               //     builder: (context) {
@@ -118,10 +117,10 @@ class HLHttpClient {
               //     },
               //   ),
               // );
-            }
+            // }
             break;
           default:
-            ClientHandle.handleError(responseEntity.errorMsg, context);
+            ClientHandle.handleError(responseEntity.errorMsg);
             errorCallBack!(responseEntity.errorCode, responseEntity.errorMsg);
             break;
         }
@@ -138,7 +137,6 @@ class HLHttpClient {
       {params,
       options,
       cancelToken,
-      required BuildContext context,
       Function? successCallBack,
       Function? errorCallBack}) async {
     var response;
@@ -147,7 +145,7 @@ class HLHttpClient {
       response = await dio.post(url,
           queryParameters: params, options: options, cancelToken: cancelToken);
     } on DioError catch (e) {
-      formatError(e, context, errorCallBack);
+      formatError(e, errorCallBack);
     }
     if (null != response.data) {
       ResponseEntity responseEntity =
@@ -160,22 +158,22 @@ class HLHttpClient {
             break;
           case Code.NOT_LOGIN_IN:
             //未登录
-            ClientHandle.handleError(responseEntity.errorMsg, context);
+            ClientHandle.handleError(responseEntity.errorMsg);
             errorCallBack!(responseEntity.errorCode, responseEntity.errorMsg);
-            if (null != context) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return Scaffold(
-                      body: Container(),
-                    );
-                  },
-                ),
-              );
-            }
+            // if (null != context) {
+            //   Navigator.of(context).push(
+            //     MaterialPageRoute(
+            //       builder: (context) {
+            //         return Scaffold(
+            //           body: Container(),
+            //         );
+            //       },
+            //     ),
+            //   );
+            // }
             break;
           default:
-            ClientHandle.handleError(responseEntity.errorMsg, context);
+            ClientHandle.handleError(responseEntity.errorMsg);
             errorCallBack!(responseEntity.errorCode, responseEntity.errorMsg);
             break;
         }
@@ -199,13 +197,13 @@ class HLHttpClient {
       print('downloadFile success---------${response.data}');
     } on DioError catch (e) {
       print('downloadFile error---------$e');
-      formatError(e, null, null);
+      formatError(e, null);
     }
     return response.data;
   }
 
   ///请求error统一处理
-  void formatError(DioError e, BuildContext? context, Function? errorCallBack) {
+  void formatError(DioError e, Function? errorCallBack) {
     print("\n================== 错误处理 ======================");
     String msg;
     if (e.type == DioErrorType.connectionTimeout) {
@@ -238,7 +236,7 @@ class HLHttpClient {
     print("errorMsg == ${e.message}");
     // 打印data，后面的代码不会走？
     // print("data == ${e.response.data}");
-    ClientHandle.handleError(msg, context);
+    ClientHandle.handleError(msg);
     if (errorCallBack != null) {
       errorCallBack(-1, msg);
     }

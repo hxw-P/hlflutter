@@ -24,7 +24,7 @@ class HLLoginController extends GetxController {
   login(BuildContext context, AppTheme appTheme,String username, String passwod, Function complete) async{
     EasyLoading.show(status: '请求中...');
     // 同时加载在线数据
-    HLHttpClient.getInstance().post(Api.post_login, params: {'username': username, 'password': passwod}, context: context, successCallBack: (data) {
+    HLHttpClient.getInstance().post(Api.post_login, params: {'username': username, 'password': passwod}, successCallBack: (data) {
       // 设置用户信息
       Util.setUserInfo(data);
       // 登录

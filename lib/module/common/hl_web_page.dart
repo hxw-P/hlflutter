@@ -13,6 +13,7 @@ import '../../../common/hl_app_theme.dart';
 import '../../../custom/hl_view_tool.dart';
 import 'dart:async';
 
+import '../../common/hl_client_method.dart';
 import '../entity/hl_article_entity.dart';
 
 class HLWebPage extends StatefulWidget {
@@ -44,7 +45,7 @@ class _HLWebPageState extends State<HLWebPage> {
     if (ModalRoute.of(context) != null) {
       print("ModalRoute 跳转 web");
       if (widget.articleEntity == null) {
-        /// ModalRoute跳转时，首页文章跳转传了模型，项目跳转传了参数 获取路由参数,MaterialPageRoute 方式跳转
+        // ModalRoute跳转时，首页文章跳转传了模型，项目跳转传了参数 获取路由参数,MaterialPageRoute 方式跳转
         var argumentMap =
         ModalRoute.of(context)!.settings.arguments as Map<String, String>;
         if (argumentMap != null) {
@@ -53,17 +54,18 @@ class _HLWebPageState extends State<HLWebPage> {
         }
       }
       else {
+        // 只有首页文章支持web页面收藏功能
         url = widget.articleEntity?.link ?? "";
         title = widget.articleEntity?.title ?? "";
       }
     } else {
       print("Getx 跳转 web");
-      /// 获取路由参数,Getx 方式跳转，首页banner跳转传了参数
+      // 获取路由参数,Getx 方式跳转，首页banner跳转传了参数
       url = Get.parameters['url'] ?? "";
       title = Get.parameters['title'] ?? "";
     }
 
-    /// 设置主题
+    // 设置主题
     var appTheme = Provider.of<AppTheme>(context);
     webController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -100,14 +102,13 @@ class _HLWebPageState extends State<HLWebPage> {
       backgroundColor: appTheme.backGroundColor,
       appBar:
           HLViewTool.appBar(title, appTheme, enableBack: true, backAction: () {
-        // Navigator.of(context).pop("PageRoute方式返回来自:$title");
         Get.back(result: "get方式返回来自:$title");
-      }, actions: [
-            HLViewTool.createAppBarAction("images/home/list_collect_nor.png", appTheme,
-                action: () {
-                  Navigator.pushNamed(context, "noti_page", arguments: {});
-                }),
-          ]),
+      }, actions: widget.articleEntity != null ? [
+    Obx(() => HLViewTool.createAppBarAction(widget.articleEntity?.collect.value == true ? "images/home/list_collect_sel.png" : "images/home/list_collect_nor.png", appTheme,
+        action: () {
+          HLClientmethod.collect(widget.articleEntity!);
+        }))
+              ] : []),
       body: Stack(
         children: [
           Positioned(

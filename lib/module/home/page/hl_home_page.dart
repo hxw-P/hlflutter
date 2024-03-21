@@ -17,6 +17,7 @@ import 'package:hlflutter/module/common/hl_web_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../common/hl_app_theme.dart';
+import '../../../common/hl_client_method.dart';
 import '../../../common/hl_util.dart';
 import '../../../custom/hl_business_view.dart';
 import '../../../custom/popup/hl_popupwindow.dart';
@@ -252,16 +253,8 @@ class _HLHomePageState extends State<HLHomePage>
                             // 进入详情
                             goArticleDetail(i - 1);
                           }
-                          else if (action == ArticleAction.collect || action == ArticleAction.cancelCollect) {
-                            HLArticleEntity articleEntity = articles[i - 1];
-                            if (articleEntity.collect == true) {
-                              // 取消收藏文章
-                              unCollect(i - 1);
-                            }
-                            else {
-                              // 收藏文章
-                              collect(i - 1);
-                            }
+                          else if (action == ArticleAction.collect) {
+                            HLClientmethod.collect(articles[i - 1]);
                           }
                       }),
                 // 高度设置就是固定的了
@@ -354,11 +347,11 @@ class _HLHomePageState extends State<HLHomePage>
     // }
     // 同时加载在线数据
     HLHttpClient.getInstance().get("${Api.get_articles}$currentPage/json",
-        context: context, successCallBack: (data) async {
+        successCallBack: (data) async {
           List responseJson = data["datas"];
           if (responseJson.isNotEmpty) {
             List<HLArticleEntity> newArticles = [];
-            await handleResponseJson(HLArticleEntity(), responseJson).then((value) {
+            await handleResponseJson(HLArticleEntity(collect: false.obs), responseJson).then((value) {
               newArticles = value!.map((e) {
                 HLArticleEntity entity = e as HLArticleEntity;
                 print('--------------------${entity.collect}');
@@ -425,7 +418,7 @@ class _HLHomePageState extends State<HLHomePage>
     //   setState(() {});
     // }
     // 同时加载在线数据
-    HLHttpClient.getInstance().get(Api.get_banners, context: context,
+    HLHttpClient.getInstance().get(Api.get_banners,
         successCallBack: (data) async {
       List responseJson = data;
       if (responseJson.isNotEmpty) {
@@ -449,11 +442,10 @@ class _HLHomePageState extends State<HLHomePage>
   collect(int idx) {
     HLArticleEntity articleEntity = articles[idx];
     EasyLoading.show(status: '请求中...');
-    HLHttpClient.getInstance().post("${Api.post_collect_article}${articleEntity.id}/json", context: context,
+    HLHttpClient.getInstance().post("${Api.post_collect_article}${articleEntity.id}/json",
         successCallBack: (data) async {
           EasyLoading.dismiss();
-          articleEntity.collect = true;
-          setState(() {});
+          articleEntity.collect.value = true;
         }, errorCallBack: (code, msg) {
           // 请求失败
           EasyLoading.dismiss();
@@ -464,11 +456,10 @@ class _HLHomePageState extends State<HLHomePage>
   unCollect(int idx) {
     HLArticleEntity articleEntity = articles[idx];
     EasyLoading.show(status: '请求中...');
-    HLHttpClient.getInstance().post("${Api.post_uncollect_article}${articleEntity.id}/json", context: context,
+    HLHttpClient.getInstance().post("${Api.post_uncollect_article}${articleEntity.id}/json",
         successCallBack: (data) async {
           EasyLoading.dismiss();
-          articleEntity.collect = false;
-          setState(() {});
+          articleEntity.collect.value = false;
         }, errorCallBack: (code, msg) {
           // 请求失败
           EasyLoading.dismiss();
