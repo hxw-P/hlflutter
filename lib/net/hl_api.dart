@@ -23,5 +23,7 @@ class Api {
   /// 取消收藏
   static const String post_uncollect_article = "lg/uncollect_originId/";
 
+  /// 收藏文章列表
+  static const String get_collect_articles = "lg/collect/list/";
 
 }

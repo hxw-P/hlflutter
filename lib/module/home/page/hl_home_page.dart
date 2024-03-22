@@ -438,32 +438,4 @@ class _HLHomePageState extends State<HLHomePage>
     });
   }
 
-  ///收藏
-  collect(int idx) {
-    HLArticleEntity articleEntity = articles[idx];
-    EasyLoading.show(status: '请求中...');
-    HLHttpClient.getInstance().post("${Api.post_collect_article}${articleEntity.id}/json",
-        successCallBack: (data) async {
-          EasyLoading.dismiss();
-          articleEntity.collect.value = true;
-        }, errorCallBack: (code, msg) {
-          // 请求失败
-          EasyLoading.dismiss();
-        });
-  }
-
-  ///取消收藏
-  unCollect(int idx) {
-    HLArticleEntity articleEntity = articles[idx];
-    EasyLoading.show(status: '请求中...');
-    HLHttpClient.getInstance().post("${Api.post_uncollect_article}${articleEntity.id}/json",
-        successCallBack: (data) async {
-          EasyLoading.dismiss();
-          articleEntity.collect.value = false;
-        }, errorCallBack: (code, msg) {
-          // 请求失败
-          EasyLoading.dismiss();
-        });
-  }
-
 }

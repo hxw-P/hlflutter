@@ -14,7 +14,7 @@ class HLSetPage extends StatelessWidget {
   HLSetController setController = Get.put(HLSetController());
 
   var itemList = [
-    {"title": "退出登录", "image": "images/personal/web.png"},
+    {"title": "退出登录", "image": "images/personal/logout.png"},
   ];
 
   HLSetPage({super.key});

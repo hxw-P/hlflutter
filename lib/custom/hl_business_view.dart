@@ -272,6 +272,7 @@ class HLBusinessView {
         bool hasArrow = true,
         double circular = 0,
         bool isTopFirst = false,
+        bool isLoaclImage = true,
       }) {
     return GestureDetector(
       child: Container(
@@ -292,8 +293,10 @@ class HLBusinessView {
                   height: height == 0 ? Util.px(40) - Util.px(1) : height - Util.px(1),
                   child: Row(
                     children: [
-                      Padding(padding: EdgeInsets.fromLTRB(Util.px(10), 0, 0, 0),
-                      child: Image.asset(iconPath, width: Util.px(20), height: Util.px(20))),
+                      Padding(
+                          padding: EdgeInsets.fromLTRB(iconPath.isNotEmpty ? Util.px(10) : 0, 0, 0, 0),
+                          child: iconPath.isNotEmpty ? isLoaclImage ? Image.asset(iconPath, width: Util.px(20), height: Util.px(20)) : FadeInImage.assetNetwork(placeholder: "images/common/img_placeholder.png", fit: BoxFit.fitHeight, image: iconPath) : Container()
+                      ),
                       Container(
                         margin: EdgeInsets.fromLTRB(imgRightGap == 0 ? Util.px(10) : imgRightGap, 0, 0, 0),
                         child: HLViewTool.createText(

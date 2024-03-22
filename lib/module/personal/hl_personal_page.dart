@@ -13,10 +13,9 @@ class HLPersonalPage extends StatelessWidget {
   HLPersonalController personalController = Get.put(HLPersonalController());
 
   var itemList = [
-    {"title": "收藏网站", "image": "images/personal/web.png"},
-    {"title": "收藏文章", "image": "images/personal/wenjian.png"},
-    {"title": "关于我们", "image": "images/personal/wenjian.png"},
-    {"title": "设置", "image": "images/personal/wenjian.png"}
+    {"title": "我的收藏", "image": "images/personal/wenjian.png"},
+    {"title": "关于我们", "image": "images/personal/about.png"},
+    {"title": "设置", "image": "images/personal/set.png"}
   ];
 
   HLPersonalPage({super.key});

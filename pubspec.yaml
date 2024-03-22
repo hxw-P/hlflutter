@@ -104,6 +104,9 @@ flutter:
     - images/personal/head_back.png
     - images/personal/web.png
     - images/personal/wenjian.png
+    - images/personal/about.png
+    - images/personal/set.png
+    - images/personal/logout.png
     - images/search/back.png
     - images/login/login_red.png
     - images/login/login_btn_chose_nomal.png

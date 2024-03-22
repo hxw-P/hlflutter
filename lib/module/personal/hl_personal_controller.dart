@@ -9,9 +9,10 @@ class HLPersonalController extends GetxController {
   selItem(int index) {
     print('selItem ${index}');
     if (index == 0) {
-      // 收藏网站
+      // 收藏文章
       if (Util.isLogin() == true) {
         // 已登录，跳转收藏页面
+        Get.toNamed(HLRoutes.collect);
       }
       else {
         // 未登录，跳转登录
@@ -19,16 +20,6 @@ class HLPersonalController extends GetxController {
       }
     }
     else if (index == 1) {
-      // 收藏文章
-      if (Util.isLogin() == true) {
-        // 已登录，跳转收藏页面
-      }
-      else {
-        // 未登录，跳转登录
-        Get.toNamed(HLRoutes.login);
-      }
-    }
-    else if (index == 2) {
       // 关于我们
       Get.toNamed("/web", arguments: {
         // 传参
@@ -39,7 +30,7 @@ class HLPersonalController extends GetxController {
         print("$value");
       });
     }
-    else if (index == 3) {
+    else if (index == 2) {
       // 设置
       Get.toNamed(HLRoutes.set);
     }
