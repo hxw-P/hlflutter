@@ -9,6 +9,7 @@ import '../../../common/hl_app_theme.dart';
 import '../../../common/hl_util.dart';
 import '../../../custom/hl_business_view.dart';
 import '../../../custom/hl_view_tool.dart';
+import '../../../local/hl_local.dart';
 import '../set/hl_set_controller.dart';
 import 'hl_collect_controller.dart';
 
@@ -35,7 +36,7 @@ class _HLCollectPageState extends State<HLCollectPage> {
   Widget build(BuildContext context) {
     var appTheme = Provider.of<AppTheme>(context);
     return Scaffold(
-        appBar: HLViewTool.appBar("我的收藏", appTheme, enableBack: true,
+        appBar: HLViewTool.appBar(HLLocal.collect.tr, appTheme, enableBack: true,
             backAction: () {
           collectController.back();
         }),

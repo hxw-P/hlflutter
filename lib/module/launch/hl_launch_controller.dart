@@ -9,8 +9,6 @@ import '../main/hl_tabBar_page.dart';
 class HLLaunchController extends GetxController {
 
   jumpToMain() {
-    // 初始化SharedPreferences
-    Util.sharedPreInstance().then((value) {
       if (Util.isShowGuide() == true) {
         // 显示过引导页，跳转主页面
         Get.offAll(TabBarPage());
@@ -19,7 +17,6 @@ class HLLaunchController extends GetxController {
         Get.offAll(const HLGuidePage());
         Util.showGuide();
       }
-    });
   }
 
 }

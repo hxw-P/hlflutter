@@ -5,28 +5,28 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 
 import '../../../common/hl_app_theme.dart';
+import '../../../common/hl_util.dart';
 import '../../../custom/hl_business_view.dart';
 import '../../../custom/hl_view_tool.dart';
 import '../../../local/hl_local.dart';
-import 'hl_set_controller.dart';
+import 'hl_language_controller.dart';
 
-class HLSetPage extends StatelessWidget {
-  // 第一种
-  HLSetController setController = Get.put(HLSetController());
+class HLLanguagePage extends StatelessWidget {
+  HLLanguageController languageController = Get.put(HLLanguageController());
 
   var itemList = [
-    {"title": HLLocal.languageSetting.tr},
-    {"title": HLLocal.logout.tr},
+    {"title": HLLocal.defaultLanguage.tr},
+    {"title": HLLocal.languageZHHans.tr},
+    {"title": HLLocal.languageZHHant.tr},
+    {"title": HLLocal.languageEN.tr}
   ];
-
-  HLSetPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     var appTheme = Provider.of<AppTheme>(context);
     return Scaffold(
-      appBar: HLViewTool.appBar(HLLocal.set.tr, appTheme, enableBack: true, backAction: () {
-        setController.back();
+      appBar: HLViewTool.appBar(HLLocal.languageSetting.tr, appTheme, enableBack: true, backAction: () {
+        languageController.back();
       }),
       backgroundColor: appTheme.backGroundColor,
       body: ListView.builder(
@@ -36,10 +36,10 @@ class HLSetPage extends StatelessWidget {
             i,
             itemList[i]["title"].toString(),
             "",
-          isTopFirst: true,
-          actionBlock: (index) {
-            setController.selItem(index, context, appTheme);
-          }),
+            circular: Util.px(4),
+            color: appTheme.themeColor, actionBlock: (index) {
+          languageController.selItem(index, context, appTheme);
+        }),
         itemCount: itemList.length,
       ),
     );

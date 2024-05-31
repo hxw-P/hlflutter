@@ -15,11 +15,25 @@ import '../../main/hl_tabBar_page.dart';
 
 class HLSetController extends GetxController {
 
+  /// 设置页面选项
+  selItem(int index, BuildContext context, AppTheme appTheme) {
+    print('set selItem ${index}');
+    if (index == 0) {
+      // 语言设置
+      Get.toNamed(HLRoutes.language);
+    }
+    else {
+      // 退出登录
+      logout(context, appTheme);
+    }
+  }
+
+  /// 退出登录
   logout(BuildContext context, AppTheme appTheme) {
     EasyLoading.show(status: 'loading...');
     HLHttpClient.getInstance().get(Api.get_logout, successCallBack: (data) async {
-          // 退出登录
-          Util.loginOut();
+          // 设置退出登录标识
+          Util.loginOutSuccess();
           EasyLoading.dismiss();
           Fluttertoast.showToast(
             msg: '退出登录成功',

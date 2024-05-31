@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hlflutter/local/hl_local.dart';
 import 'package:hlflutter/module/entity/hl_user_entity.dart';
 import 'package:provider/provider.dart';
 import '../../common/hl_app_theme.dart';
@@ -8,17 +9,28 @@ import '../../custom/hl_business_view.dart';
 import '../../custom/hl_view_tool.dart';
 import '../personal/hl_personal_controller.dart';
 
-class HLPersonalPage extends StatelessWidget {
+class HLPersonalPage extends StatefulWidget {
+  const HLPersonalPage({super.key});
+
+  // const HLProjectPage({Key? key}) : super(key: key);
+
+  @override
+  _HLPersonalPageState createState() => _HLPersonalPageState();
+}
+
+class _HLPersonalPageState extends State<HLPersonalPage> with AutomaticKeepAliveClientMixin<HLPersonalPage> {
   // 第一种
   HLPersonalController personalController = Get.put(HLPersonalController());
 
   var itemList = [
-    {"title": "我的收藏", "image": "images/personal/wenjian.png"},
-    {"title": "关于我们", "image": "images/personal/about.png"},
-    {"title": "设置", "image": "images/personal/set.png"}
+    {"title": HLLocal.collect.tr, "image": "images/personal/wenjian.png"},
+    {"title": HLLocal.aboutUS.tr, "image": "images/personal/about.png"},
+    {"title": HLLocal.set.tr, "image": "images/personal/set.png"}
   ];
 
-  HLPersonalPage({super.key});
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +56,5 @@ class HLPersonalPage extends StatelessWidget {
       ),
     );
   }
-
 
 }

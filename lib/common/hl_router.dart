@@ -8,4 +8,5 @@ abstract class HLRoutes {
   static const set = '/set';
   static const launch = '/launch';
   static const collect = '/collect';
+  static const language = '/language';
 }

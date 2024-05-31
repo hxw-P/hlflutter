@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:hlflutter/custom/hl_business_view.dart';
+import 'package:hlflutter/local/hl_local.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -17,6 +19,7 @@ import '../../net/hl_http_client.dart';
 import '../entity/hl_project_entity.dart';
 
 class HLProjectPage extends StatefulWidget {
+  const HLProjectPage({super.key});
 
   // const HLProjectPage({Key? key}) : super(key: key);
 
@@ -58,13 +61,11 @@ class _HLProjectPageState extends State<HLProjectPage> with AutomaticKeepAliveCl
     getProjects();
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     var appTheme = Provider.of<AppTheme>(context);
     return Scaffold(
-      appBar: HLViewTool.appBar("项目", appTheme),
+      appBar: HLViewTool.appBar(HLLocal.project.tr, appTheme),
       body: SmartRefresher(controller: _refreshController,
         enablePullDown: true,
         enablePullUp: true,

@@ -2,12 +2,13 @@ import 'package:get/get.dart';
 
 import '../../common/hl_router.dart';
 import '../../common/hl_util.dart';
+import '../../local/hl_local.dart';
 
 class HLPersonalController extends GetxController {
 
   /// 个人页面选项
   selItem(int index) {
-    print('selItem ${index}');
+    print('personal selItem ${index}');
     if (index == 0) {
       // 收藏文章
       if (Util.isLogin() == true) {
@@ -24,7 +25,7 @@ class HLPersonalController extends GetxController {
       Get.toNamed("/web", arguments: {
         // 传参
         "url": "https://developer.huawei.com/consumer/cn/",
-        "title": "关于我们"
+        "title": HLLocal.aboutUS.tr
       })?.then((value) {
         // 回参
         print("$value");
@@ -32,7 +33,14 @@ class HLPersonalController extends GetxController {
     }
     else if (index == 2) {
       // 设置
-      Get.toNamed(HLRoutes.set);
+      if (Util.isLogin() == true) {
+        // 已登录，跳转设置页面
+        Get.toNamed(HLRoutes.set);
+      }
+      else {
+        // 未登录，跳转登录
+        Get.toNamed(HLRoutes.login);
+      }
     }
   }
 

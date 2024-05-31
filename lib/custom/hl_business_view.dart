@@ -363,7 +363,7 @@ class HLBusinessView {
                       fontWeight: FontWeight.bold)),
               Padding(padding: EdgeInsets.fromLTRB(Util.px(10), Util.px(10), 0, 0),
                 child: HLViewTool.createText(
-                    text: userInfo.email!.isNotEmpty ? "${userInfo.email}" : "1375166613@qq.com",
+                    text: "${userInfo.email}",
                     color: appTheme.subTitleDarkColor,
                     fontSize: 18,
                     fontWeight: FontWeight.normal),)

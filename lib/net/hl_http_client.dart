@@ -21,7 +21,7 @@ class HLHttpClient {
   CancelToken cancelToken = CancelToken();
 
   static HLHttpClient getInstance() {
-    if (null == instance) instance = HLHttpClient();
+    instance ??= HLHttpClient();
     return instance!;
   }
 
@@ -31,9 +31,9 @@ class HLHttpClient {
       //请求基地址,可以包含子路径
       baseUrl: _baseUrl,
       //连接服务器超时时间，单位是毫秒.
-      connectTimeout: Duration(milliseconds: 10000),
+      connectTimeout: const Duration(milliseconds: 10000),
       //响应流上前后两次接受到数据的间隔，单位为毫秒。
-      receiveTimeout: Duration(milliseconds: 15000),
+      receiveTimeout: const Duration(milliseconds: 15000),
       //Http请求头.
       headers: {"version": "1.0.0"},
       //请求的Content-Type，默认值是[ContentType.json]. 也可以用ContentType.parse("application/x-www-form-urlencoded")

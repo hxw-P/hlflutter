@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hlflutter/local/hl_local.dart';
 
 // page
 import 'package:hlflutter/module/home/page/hl_home_page.dart';
@@ -20,7 +22,7 @@ class _TabBarPageState extends State<TabBarPage> {
   int currentIndex = 0;
   PageController pageController = PageController(initialPage: 0);
   /// 子控制器
-  final pages = [HLHomePage(title: "首页"), HLProjectPage(), HLPersonalPage()];
+  final pages = [const HLHomePage(), const HLProjectPage(), const HLPersonalPage()];
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +35,8 @@ class _TabBarPageState extends State<TabBarPage> {
             Expanded(
               child: PageView(
                 controller: pageController,
-                children: pages,
-                physics: NeverScrollableScrollPhysics(), // 禁止滑动
+                physics: const NeverScrollableScrollPhysics(),
+                children: pages, // 禁止滑动
               ),
             ),
             Container(
@@ -51,21 +53,21 @@ class _TabBarPageState extends State<TabBarPage> {
                         children: <Widget>[
                           createBottomAppBarItem(
                               0,
-                              "首页",
+                              HLLocal.home.tr,
                               currentIndex == 0
                                   ? "images/bottom_tabbar/shouye_sel.png"
                                   : "images/bottom_tabbar/shouye_nor.png",
                               appTheme),
                           createBottomAppBarItem(
                               1,
-                              "项目",
+                              HLLocal.project.tr,
                               currentIndex == 1
                                   ? "images/bottom_tabbar/guangchang_sel.png"
                                   : "images/bottom_tabbar/guangchang_nor.png",
                               appTheme),
                           createBottomAppBarItem(
                               2,
-                              "我的",
+                              HLLocal.mine.tr,
                               currentIndex == 2
                                   ? "images/bottom_tabbar/yonghu_sel.png"
                                   : "images/bottom_tabbar/yonghu_nor.png",
@@ -93,7 +95,7 @@ class _TabBarPageState extends State<TabBarPage> {
       flex: 1,
       child: GestureDetector(
         child: Container(
-          padding: EdgeInsets.fromLTRB(0, Util.px(3), 0, Util.px(3)),
+          padding: EdgeInsets.fromLTRB(0, Util.px(5), 0, Util.px(5)),
           color: appTheme.backColor,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

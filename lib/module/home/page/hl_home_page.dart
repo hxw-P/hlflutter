@@ -13,11 +13,13 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:hlflutter/common/hl_native_handle.dart';
 import 'package:hlflutter/custom/hl_view_tool.dart';
 import 'package:hlflutter/db/hl_db_base_entity.dart';
+import 'package:hlflutter/local/hl_local.dart';
 import 'package:hlflutter/module/common/hl_web_page.dart';
 import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../../common/hl_app_theme.dart';
 import '../../../common/hl_client_method.dart';
+import '../../../common/hl_router.dart';
 import '../../../common/hl_util.dart';
 import '../../../custom/hl_business_view.dart';
 import '../../../custom/popup/hl_popupwindow.dart';
@@ -29,7 +31,7 @@ import '../../entity/hl_article_entity.dart';
 import 'hl_article_detail_page.dart';
 
 class HLHomePage extends StatefulWidget {
-  const HLHomePage({super.key, required this.title});
+  const HLHomePage({super.key});
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -39,8 +41,6 @@ class HLHomePage extends StatefulWidget {
   // case the title) provided by the parent (in this case the App widget) and
   // used by the build method of the State. Fields in a Widget subclass are
   // always marked "final".
-
-  final String title;
 
   @override
   State<HLHomePage> createState() => _HLHomePageState();
@@ -117,10 +117,11 @@ class _HLHomePageState extends State<HLHomePage>
       //     )
       //   ],),
       backgroundColor: appTheme.grayBackColor,
-      appBar: HLViewTool.appBar("首页", appTheme, actions: [
+      appBar: HLViewTool.appBar(HLLocal.home.tr, appTheme, actions: [
         HLViewTool.createAppBarAction("images/home/sousuo.png", appTheme,
             action: () {
-          Navigator.pushNamed(context, "noti_page", arguments: {});
+          // Navigator.pushNamed(context, "noti_page", arguments: {});
+              Get.toNamed(HLRoutes.set);
         }),
         HLViewTool.createAppBarAction("images/home/tianjia.png", appTheme,
             key: _targetKey, action: () {

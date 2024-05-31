@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
 import 'package:hlflutter/module/common/hl_web_page.dart';
 import 'package:hlflutter/module/main/hl_tabBar_page.dart';
+import 'package:hlflutter/module/personal/language/hl_language_page.dart';
 import 'package:provider/provider.dart';
 import 'package:hlflutter/common/hl_app_theme.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'common/hl_router.dart';
+import 'common/hl_util.dart';
+import 'local/hl_local.dart';
 import 'module/guide/hl_guide_page.dart';
 import 'module/home/page/hl_article_detail_page.dart';
 import 'module/home/page/hl_noti_page.dart';
@@ -17,10 +23,12 @@ import 'module/personal/collect/hl_collect_page.dart';
 import 'module/personal/hl_personal_page.dart';
 import 'module/personal/set/hl_set_page.dart';
 
-void main() {
+Future<void> main() async {
   final appTheme = AppTheme();
-  //功能备注，在run之前，需要调用到一些原生的功能， 比如获取到软件的版本号等，就需确保在run 之前绑定到，才能调用到原生代码。
+  // 功能备注，在run之前，需要调用到一些原生的功能， 比如获取到软件的版本号等，就需确保在run 之前绑定到，才能调用到原生代码。
   WidgetsFlutterBinding.ensureInitialized();
+  // 初始化SharedPreferences
+  await Util.sharedPreInstance();
   runApp(
     MultiProvider(
       providers: [
@@ -36,6 +44,30 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  Locale? getLocale() {
+    Locale? appLocale;
+    String language = Util.getLanguage();
+    switch (language) {
+      case "zh-Hans":
+        // 简体中文
+        appLocale = const Locale('zh-Hans', 'CN');
+        break;
+      case "zh-Hant":
+      // 繁体中文
+        appLocale = const Locale('zh-Hant', 'CN');
+        break;
+      case "en":
+        // English
+        appLocale = const Locale('en', 'US');
+        break;
+      default:
+        // 默认跟随系统
+        appLocale = Get.deviceLocale;
+        break;
+    }
+    return appLocale;
+  }
 
   // This widget is the root of your application.
   @override
@@ -95,9 +127,14 @@ class MyApp extends StatelessWidget {
         HLRoutes.login: (context) => const HLLoginPage(),
         HLRoutes.personal: (context) => HLPersonalPage(),
         HLRoutes.set: (context) => HLSetPage(),
-        HLRoutes.collect: (context) => HLCollectPage(),
+        HLRoutes.collect: (context) => const HLCollectPage(),
         HLRoutes.launch: (context) => const HLLaunchPage(),
-    },
+        HLRoutes.language: (context) => HLLanguagePage(),
+      },
+      // 多语言配置
+      translations: Messages(),
+      locale: getLocale(),
+      fallbackLocale: const Locale("zh", "CN"),//默认语言
     );
   }
 }

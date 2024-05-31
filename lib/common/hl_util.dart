@@ -232,15 +232,17 @@ class Util {
   }
 
   /// 登录
-  static loginIn() {
+  static loginInSuccess() {
     prefs!.setBool(HLConstants.isLogin, true);
   }
 
   /// 登出
-  static loginOut() async {
+  static loginOutSuccess() async {
+    prefs!.setBool(HLConstants.isLogin, false);
     // 清除cookie缓存
     await CookieHandle.delete();
-    prefs!.setBool(HLConstants.isLogin, false);
+    // 清除用户信息
+    prefs!.remove(HLConstants.userInfo);
   }
 
   /// 是否显示引导页
@@ -261,9 +263,33 @@ class Util {
 
   /// 获取用户信息
   static HLUserEntity getUserInfo() {
+    if (prefs!.containsKey(HLConstants.userInfo)) {
     String jsonStr = prefs!.getString(HLConstants.userInfo) ?? "";
     HLUserEntity entity =  HLUserEntity().fromMap(json.decode(jsonStr) as Map<String, dynamic>);
-    return entity;
+      return entity;
+    }
+    else {
+      return HLUserEntity(
+        userName: "请登录",
+        email: "",
+      );
+    }
   }
 
+  /// 设置语言
+  static setLanguage(String language) {
+    prefs!.setString(HLConstants.language, language);
+  }
+  
+  /// 获取语言
+  static String getLanguage() {
+    if (prefs!.containsKey(HLConstants.language)) {
+      String language = prefs!.getString(HLConstants.language) ?? "";
+      return language;
+    }
+    else {
+      return "";
+    }
+  }
+  
 }

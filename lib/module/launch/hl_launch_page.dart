@@ -19,8 +19,7 @@ class _HLLaunchPageState extends State<HLLaunchPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // 跳转主页面
-    launchController.jumpToMain();
+    WidgetsBinding.instance.addPostFrameCallback((_) => launchController.jumpToMain());
   }
 
   @override
@@ -34,4 +33,5 @@ class _HLLaunchPageState extends State<HLLaunchPage> {
       ),
     );
   }
+
 }

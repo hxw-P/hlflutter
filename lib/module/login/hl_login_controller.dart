@@ -27,8 +27,8 @@ class HLLoginController extends GetxController {
     HLHttpClient.getInstance().post(Api.post_login, params: {'username': username, 'password': passwod}, successCallBack: (data) {
       // 设置用户信息
       Util.setUserInfo(data);
-      // 登录
-      Util.loginIn();
+      // 设置登录标识
+      Util.loginInSuccess();
       EasyLoading.dismiss();
       // 登录后重进主页面，整体刷新
       Get.offAll(TabBarPage());
