@@ -4,10 +4,9 @@ import 'package:hlflutter/local/hl_local.dart';
 import 'package:hlflutter/module/entity/hl_user_entity.dart';
 import 'package:provider/provider.dart';
 import '../../common/hl_app_theme.dart';
+import '../../common/hl_router.dart';
 import '../../common/hl_util.dart';
 import '../../custom/hl_business_view.dart';
-import '../../custom/hl_view_tool.dart';
-import '../personal/hl_personal_controller.dart';
 
 class HLPersonalPage extends StatefulWidget {
   const HLPersonalPage({super.key});
@@ -19,8 +18,6 @@ class HLPersonalPage extends StatefulWidget {
 }
 
 class _HLPersonalPageState extends State<HLPersonalPage> with AutomaticKeepAliveClientMixin<HLPersonalPage> {
-  // 第一种
-  HLPersonalController personalController = Get.put(HLPersonalController());
 
   var itemList = [
     {"title": HLLocal.collect.tr, "image": "images/personal/wenjian.png"},
@@ -50,11 +47,49 @@ class _HLPersonalPageState extends State<HLPersonalPage> with AutomaticKeepAlive
             circular: Util.px(4),
             color: appTheme.themeColor,
             actionBlock: (index) {
-              personalController.selItem(index);
+              selItem(index);
             }),
         itemCount: itemList.length + 1,
       ),
     );
+  }
+
+  /// 个人页面选项
+  selItem(int index) {
+    print('personal selItem ${index}');
+    if (index == 0) {
+      // 收藏文章
+      if (Util.isLogin() == true) {
+        // 已登录，跳转收藏页面
+        Get.toNamed(HLRoutes.collect);
+      }
+      else {
+        // 未登录，跳转登录
+        Get.toNamed(HLRoutes.login);
+      }
+    }
+    else if (index == 1) {
+      // 关于我们
+      Get.toNamed("/web", arguments: {
+        // 传参
+        "url": "https://developer.huawei.com/consumer/cn/",
+        "title": HLLocal.aboutUS.tr
+      })?.then((value) {
+        // 回参
+        print("$value");
+      });
+    }
+    else if (index == 2) {
+      // 设置
+      if (Util.isLogin() == true) {
+        // 已登录，跳转设置页面
+        Get.toNamed(HLRoutes.set);
+      }
+      else {
+        // 未登录，跳转登录
+        Get.toNamed(HLRoutes.login);
+      }
+    }
   }
 
 }

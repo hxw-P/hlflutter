@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
@@ -32,8 +31,6 @@ class _HLWebPageState extends State<HLWebPage> {
   late WebViewController webController;
   HLWebController hlWebController = Get.put(HLWebController());
 
-
-
   @override
   void initState() {
     // TODO: implement initState
@@ -47,13 +44,12 @@ class _HLWebPageState extends State<HLWebPage> {
       if (widget.articleEntity == null) {
         // ModalRoute跳转时，首页文章跳转传了模型，项目跳转传了参数 获取路由参数,MaterialPageRoute 方式跳转
         var argumentMap =
-        ModalRoute.of(context)!.settings.arguments as Map<String, String>;
+            ModalRoute.of(context)!.settings.arguments as Map<String, String>;
         if (argumentMap != null) {
           url = argumentMap["url"] ?? "";
           title = argumentMap["title"] ?? "";
         }
-      }
-      else {
+      } else {
         // 只有首页文章支持web页面收藏功能
         url = widget.articleEntity?.link ?? "";
         title = widget.articleEntity?.title ?? "";
@@ -103,12 +99,18 @@ class _HLWebPageState extends State<HLWebPage> {
       appBar:
           HLViewTool.appBar(title, appTheme, enableBack: true, backAction: () {
         Get.back(result: "get方式返回来自:$title");
-      }, actions: widget.articleEntity != null ? [
-    Obx(() => HLViewTool.createAppBarAction(widget.articleEntity?.collect.value == true ? "images/home/list_collect_sel.png" : "images/home/list_collect_nor.png", appTheme,
-        action: () {
-          HLClientmethod.collect(widget.articleEntity!);
-        }))
-              ] : []),
+      },
+              actions: widget.articleEntity != null
+                  ? [
+                      Obx(() => HLViewTool.createAppBarAction(
+                              widget.articleEntity?.collect.value == true
+                                  ? "images/home/list_collect_sel.png"
+                                  : "images/home/list_collect_nor.png",
+                              appTheme, action: () {
+                            HLClientmethod.collect(widget.articleEntity!);
+                          }))
+                    ]
+                  : []),
       body: Stack(
         children: [
           Positioned(
@@ -118,18 +120,19 @@ class _HLWebPageState extends State<HLWebPage> {
             child: SizedBox(
               height: Util.px(3),
               child: Obx(() => LinearProgressIndicator(
-                    backgroundColor: appTheme.dividerColor,
                     // 背景颜色
-                    valueColor: AlwaysStoppedAnimation(appTheme.subThemeColor),
+                    backgroundColor: appTheme.dividerColor,
                     // 进度动画颜色
+                    valueColor: AlwaysStoppedAnimation(appTheme.subThemeColor),
                     value: hlWebController
                         .progress.value, // 如果进度是确定的，那么可以设置进度百分比，0-1
                   )),
             ),
           ),
           Obx(() => Positioned(
-              top: hlWebController
-                  .isLoading.value == false ? Util.px(0) : Util.px(3),
+              top: hlWebController.isLoading.value == false
+                  ? Util.px(0)
+                  : Util.px(3),
               left: 0,
               right: 0,
               bottom: 0,

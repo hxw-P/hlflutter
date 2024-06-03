@@ -9,11 +9,8 @@ import '../../../common/hl_util.dart';
 import '../../../custom/hl_business_view.dart';
 import '../../../custom/hl_view_tool.dart';
 import '../../../local/hl_local.dart';
-import 'hl_language_controller.dart';
 
 class HLLanguagePage extends StatelessWidget {
-  HLLanguageController languageController = Get.put(HLLanguageController());
-
   var itemList = [
     {"title": HLLocal.defaultLanguage.tr},
     {"title": HLLocal.languageZHHans.tr},
@@ -25,23 +22,59 @@ class HLLanguagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     var appTheme = Provider.of<AppTheme>(context);
     return Scaffold(
-      appBar: HLViewTool.appBar(HLLocal.languageSetting.tr, appTheme, enableBack: true, backAction: () {
-        languageController.back();
+      appBar: HLViewTool.appBar(HLLocal.languageSetting.tr, appTheme,
+          enableBack: true, backAction: () {
+        back();
       }),
       backgroundColor: appTheme.backGroundColor,
       body: ListView.builder(
         itemBuilder: (c, i) => HLBusinessView.commonRow(
-            context,
-            appTheme,
-            i,
-            itemList[i]["title"].toString(),
-            "",
+            context, appTheme, i, itemList[i]["title"].toString(), "",
             circular: Util.px(4),
             color: appTheme.themeColor, actionBlock: (index) {
-          languageController.selItem(index, context, appTheme);
+          selItem(index, context, appTheme);
         }),
         itemCount: itemList.length,
       ),
     );
+  }
+
+  /// 设置语言页面选项
+  selItem(int index, BuildContext context, AppTheme appTheme) {
+    print('language selItem ${index}');
+    if (index == 0) {
+      // 跟随系统语言
+      Locale deviceLocale = Get.deviceLocale!;
+      print("---------------${deviceLocale}");
+      print("---------------${deviceLocale.languageCode}");
+      print("---------------${deviceLocale.countryCode}");
+
+      if (deviceLocale.toString().contains("Hans")) {
+        Get.updateLocale(const Locale("zh-Hans", "CN"));
+        Util.setLanguage("zh-Hans");
+      } else if (deviceLocale.toString().contains("Hant")) {
+        Get.updateLocale(const Locale("zh-Hant", "CN"));
+        Util.setLanguage("zh-Hant");
+      } else {
+        Get.updateLocale(deviceLocale);
+        Util.setLanguage(deviceLocale.languageCode);
+      }
+    } else if (index == 1) {
+      // 简体中文
+      Get.updateLocale(const Locale("zh-Hans", "CN"));
+      Util.setLanguage("zh-Hans");
+    } else if (index == 2) {
+      // 繁体中文
+      Get.updateLocale(const Locale("zh-Hant", "CN"));
+      Util.setLanguage("zh-Hant");
+    } else {
+      // 英文
+      Get.updateLocale(const Locale("en", "US"));
+      Util.setLanguage("en");
+    }
+  }
+
+  back() {
+    Get.back();
   }
 }

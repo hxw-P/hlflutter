@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,6 +60,16 @@ class _HLHomePageState extends State<HLHomePage>
   //2.实现get wantKeepAlive方法.当前页面需要缓存到的时候返回true,否则返回flase.默认是flase
   @override
   bool get wantKeepAlive => true;
+
+  // statefulWidget生命周期
+  // createState
+  // initState
+  // didChangeDependencies
+  // build
+  // addPostFrameCallback
+  // didUpdateWidget
+  // deactivate
+  // dispose
 
   @override
   void initState() {

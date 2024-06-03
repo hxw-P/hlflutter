@@ -47,7 +47,6 @@ dependencies:
   cookie_jar: ^3.0.1
   dio_cookie_manager: ^2.1.0
   #----->下拉刷新
-  easy_refresh: ^3.3.0+1 #下拉刷新
   pull_to_refresh: ^2.0.0
   #  path_provider: 1.5.1  #状态管理
   #----->三方ui控件

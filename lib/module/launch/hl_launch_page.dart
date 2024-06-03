@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../common/hl_util.dart';
-import 'hl_launch_controller.dart';
+import '../guide/hl_guide_page.dart';
+import '../main/hl_tabBar_page.dart';
 
 class HLLaunchPage extends StatefulWidget {
   const HLLaunchPage({super.key});
@@ -13,13 +14,12 @@ class HLLaunchPage extends StatefulWidget {
 }
 
 class _HLLaunchPageState extends State<HLLaunchPage> {
-  HLLaunchController launchController = Get.put(HLLaunchController());
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => launchController.jumpToMain());
+    WidgetsBinding.instance.addPostFrameCallback((_) => jumpToMain());
   }
 
   @override
@@ -32,6 +32,17 @@ class _HLLaunchPageState extends State<HLLaunchPage> {
         child: Image.asset('images/launch/launch_icon.png'),
       ),
     );
+  }
+
+  jumpToMain() {
+    if (Util.isShowGuide() == true) {
+      // 显示过引导页，跳转主页面
+      Get.offAll(TabBarPage());
+    } else {
+      // 未显示过引导页，跳转引导页
+      Get.offAll(const HLGuidePage());
+      Util.showGuide();
+    }
   }
 
 }

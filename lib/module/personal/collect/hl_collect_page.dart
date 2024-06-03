@@ -6,11 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../../common/hl_app_theme.dart';
-import '../../../common/hl_util.dart';
 import '../../../custom/hl_business_view.dart';
 import '../../../custom/hl_view_tool.dart';
 import '../../../local/hl_local.dart';
-import '../set/hl_set_controller.dart';
 import 'hl_collect_controller.dart';
 
 class HLCollectPage extends StatefulWidget {
@@ -30,6 +28,14 @@ class _HLCollectPageState extends State<HLCollectPage> {
     collectController.getCollectArticles(() {
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    print("收藏页面释放");
+    collectController.remove();
   }
 
   @override
