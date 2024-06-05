@@ -9,4 +9,5 @@ abstract class HLRoutes {
   static const launch = '/launch';
   static const collect = '/collect';
   static const language = '/language';
+  static const udp = '/udp';
 }

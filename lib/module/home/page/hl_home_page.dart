@@ -113,6 +113,7 @@ class _HLHomePageState extends State<HLHomePage>
       {"title": "消息", "image": "images/home/xiaoxi.png"},
       {"title": "通知", "image": "images/home/tongzhi.png"},
       {"title": "编辑", "image": "images/home/bianji.png"},
+      {"title": "udp", "image": "images/home/bianji.png"},
     ];
     return Scaffold(
       // appBar: HLViewHanlde.appBar("title", appTheme,
@@ -130,13 +131,13 @@ class _HLHomePageState extends State<HLHomePage>
         HLViewTool.createAppBarAction("images/home/sousuo.png", appTheme,
             action: () {
           // Navigator.pushNamed(context, "noti_page", arguments: {});
-              Get.toNamed(HLRoutes.set);
+          Get.toNamed(HLRoutes.set);
         }),
         HLViewTool.createAppBarAction("images/home/tianjia.png", appTheme,
             key: _targetKey, action: () {
           HLPopupWindow.showPopWindow(
             context,
-            popSize: const Size(150, 120),
+            popSize: Size(150, 40.0 * popItemList.length),
             targetKey: _targetKey,
             // popWidget: GestureDetector(
             //   child: Container(
@@ -150,17 +151,21 @@ class _HLHomePageState extends State<HLHomePage>
             //   },
             // ),
             popWidget: HLViewTool.createList(appTheme, popItemList,
-                width: 150, height: 120, itemHeight: 40, actionBlock: (index) {
+                width: 150, height: 40.0 * popItemList.length, itemHeight: 40, actionBlock: (index) {
               print('tap pop item');
-              Navigator.pop(context);
-              HLNativeHandle.exchangeWithNative(
-                  "push",
-                  {
-                    "msg": popItemList[index]["title"].toString(),
-                    "router": "/test"
-                  },
-                  (result) {});
-              // HLToast.toast(context, msg: popItemList[index]["title"].toString());
+              if (index == 3) {
+                // udp测试
+                Get.toNamed(HLRoutes.udp);
+              } else {
+                Get.back();
+                HLNativeHandle.exchangeWithNative(
+                    "push",
+                    {
+                      "msg": popItemList[index]["title"].toString(),
+                      "router": "/test"
+                    },
+                    (result) {});
+              }
             }),
             offset: const Offset(-65, 0),
           );
@@ -258,14 +263,14 @@ class _HLHomePageState extends State<HLHomePage>
                         ),
                       )
                     : HLBusinessView.articleRow(
-                        c, appTheme, i - 1, articles[i - 1], actionBlock: (action) {
-                          if (action == ArticleAction.detail) {
-                            // 进入详情
-                            goArticleDetail(i - 1);
-                          }
-                          else if (action == ArticleAction.collect) {
-                            HLClientmethod.collect(articles[i - 1]);
-                          }
+                        c, appTheme, i - 1, articles[i - 1],
+                        actionBlock: (action) {
+                        if (action == ArticleAction.detail) {
+                          // 进入详情
+                          goArticleDetail(i - 1);
+                        } else if (action == ArticleAction.collect) {
+                          HLClientmethod.collect(articles[i - 1]);
+                        }
                       }),
                 // 高度设置就是固定的了
                 // itemExtent: 200.0,
@@ -294,9 +299,11 @@ class _HLHomePageState extends State<HLHomePage>
     //   print("---$value");
     // });
     // 路由方式没有办法直接传对象，使用普通实例方式
-    Navigator.push( //跳转到第二个界面
+    Navigator.push(
+      //跳转到第二个界面
       context,
-      MaterialPageRoute(builder: (context) => HLWebPage(articleEntity: articles[index])),
+      MaterialPageRoute(
+          builder: (context) => HLWebPage(articleEntity: articles[index])),
     );
   }
 
@@ -358,35 +365,38 @@ class _HLHomePageState extends State<HLHomePage>
     // 同时加载在线数据
     HLHttpClient.getInstance().get("${Api.get_articles}$currentPage/json",
         successCallBack: (data) async {
-          List responseJson = data["datas"];
-          if (responseJson.isNotEmpty) {
-            List<HLArticleEntity> newArticles = [];
-            await handleResponseJson(HLArticleEntity(collect: false.obs), responseJson).then((value) {
-              newArticles = value!.map((e) {
-                HLArticleEntity entity = e as HLArticleEntity;
-                print('--------------------${entity.collect}');
-                return entity;
-              }).toList();
-            });
-            if (currentPage == 0) {
-              //下拉刷新
-              articles = newArticles;
-              _refreshController.refreshCompleted();
-            } else {
-              //上拉加载更多
-              articles.addAll(newArticles);
-              _refreshController.loadComplete();
-            }
-            if (articles.isNotEmpty&&banners.isNotEmpty) {
-              setState(() {});
-            }
-          }
-        }, errorCallBack: (code, msg) {
-          // 请求失败
+      List responseJson = data["datas"];
+      if (responseJson.isNotEmpty) {
+        List<HLArticleEntity> newArticles = [];
+        await handleResponseJson(
+                HLArticleEntity(collect: false.obs), responseJson)
+            .then((value) {
+          newArticles = value!.map((e) {
+            HLArticleEntity entity = e as HLArticleEntity;
+            print('--------------------${entity.collect}');
+            return entity;
+          }).toList();
         });
+        if (currentPage == 0) {
+          //下拉刷新
+          articles = newArticles;
+          _refreshController.refreshCompleted();
+        } else {
+          //上拉加载更多
+          articles.addAll(newArticles);
+          _refreshController.loadComplete();
+        }
+        if (articles.isNotEmpty && banners.isNotEmpty) {
+          setState(() {});
+        }
+      }
+    }, errorCallBack: (code, msg) {
+      // 请求失败
+    });
   }
 
-  Future<List<HLDbBaseEntity>?> handleResponseJson<T extends HLDbBaseEntity>(T t, List list) async {
+  Future<List<HLDbBaseEntity>?> handleResponseJson<T extends HLDbBaseEntity>(
+      T t, List list) async {
     List<HLDbBaseEntity> newList = [];
     // 更新数据库缓存(移除旧数据)
     print("test-测试异步1");
@@ -411,7 +421,7 @@ class _HLHomePageState extends State<HLHomePage>
   }
 
   ///获取主页轮播
-  getBanners() async{
+  getBanners() async {
     // 先显示缓存数据
     // await HLDBManager.getInstance()?.openDb().then((value) async {
     //   await HLDBManager.getInstance()?.queryItems(HLBannerEntity()).then((value) {
@@ -439,7 +449,7 @@ class _HLHomePageState extends State<HLHomePage>
           }).toList();
         });
         print("net-get_banners:$banners");
-        if (articles.isNotEmpty&&banners.isNotEmpty) {
+        if (articles.isNotEmpty && banners.isNotEmpty) {
           setState(() {});
         }
       }
@@ -447,5 +457,4 @@ class _HLHomePageState extends State<HLHomePage>
       // 请求失败
     });
   }
-
 }

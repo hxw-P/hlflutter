@@ -4,6 +4,7 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:hlflutter/device/hl_udp_page.dart';
 import 'package:hlflutter/module/common/hl_web_page.dart';
 import 'package:hlflutter/module/main/hl_tabBar_page.dart';
 import 'package:hlflutter/module/personal/language/hl_language_page.dart';
@@ -125,7 +126,7 @@ class MyApp extends StatelessWidget {
         HLRoutes.guide: (context) => const HLGuidePage(),
         HLRoutes.main: (context) => TabBarPage(),
         HLRoutes.login: (context) => const HLLoginPage(),
-        HLRoutes.personal: (context) => HLPersonalPage(),
+        HLRoutes.personal: (context) => const HLPersonalPage(),
         HLRoutes.set: (context) => HLSetPage(),
         HLRoutes.collect: (context) => const HLCollectPage(),
         HLRoutes.launch: (context) => const HLLaunchPage(),
