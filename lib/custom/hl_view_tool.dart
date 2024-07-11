@@ -129,39 +129,47 @@ class HLViewTool {
             itemBuilder: (BuildContext context, int index) {
               return Column(
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      print("object");
-                      print(index);
-                      if (actionBlock != null) {
-                        actionBlock(index);
-                      }
+                  Dismissible(
+                    key: Key(itemList[index]["title"]),
+                    onDismissed: (direction) {
+                      // 处理侧滑后的逻辑，例如删除条目
                     },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Container(
-                          padding: imagePadding ??
-                              EdgeInsets.fromLTRB(
-                                  Util.px(5), Util.px(5), 0, Util.px(5)),
-                          height: itemHeight ?? 30,
-                          child: Image.asset(itemList[index]["image"]),
-                        ),
-                        Expanded(
-                          child: Container(
-                            color: Colors.white, // 点击事件设置背景色后才会在空白处也生效
-                            padding: textPadding ??
-                                EdgeInsets.fromLTRB(Util.px(5), 0, Util.px(5), 0),
-                            alignment: Alignment.centerLeft,
-                            child: HLViewTool.createText(
-                              text: itemList[index]["title"],
-                              color: textColor ?? Colors.black,
-                              fontSize: fontSize ?? 14,
-                              fontWeight: fontWeight ?? FontWeight.normal,
-                            ),
+                    background: Container(color: Colors.blue),
+                    secondaryBackground: Container(color: Colors.green),
+                    child: GestureDetector(
+                      onTap: () {
+                        print("object");
+                        print(index);
+                        if (actionBlock != null) {
+                          actionBlock(index);
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: imagePadding ??
+                                EdgeInsets.fromLTRB(
+                                    Util.px(5), Util.px(5), 0, Util.px(5)),
+                            height: itemHeight ?? 30,
+                            child: Image.asset(itemList[index]["image"]),
                           ),
-                        )
-                      ],
+                          Expanded(
+                            child: Container(
+                              color: Colors.white, // 点击事件设置背景色后才会在空白处也生效
+                              padding: textPadding ??
+                                  EdgeInsets.fromLTRB(Util.px(5), 0, Util.px(5), 0),
+                              alignment: Alignment.centerLeft,
+                              child: HLViewTool.createText(
+                                text: itemList[index]["title"],
+                                color: textColor ?? Colors.black,
+                                fontSize: fontSize ?? 14,
+                                fontWeight: fontWeight ?? FontWeight.normal,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   Container(

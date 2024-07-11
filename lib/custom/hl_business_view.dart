@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
 import '../common/hl_app_theme.dart';
 import '../common/hl_util.dart';
@@ -21,6 +22,230 @@ class HLBusinessView {
     HLArticleEntity article, {
     Function? actionBlock,
   }) {
+    return SwipeActionCell(
+      key: ObjectKey(article.title),
+      trailingActions: <SwipeAction>[
+        SwipeAction(
+            title: "delete",
+            onTap: (CompletionHandler handler) async {
+              await handler(true);
+              // list.removeAt(index);
+              // setState(() {});
+            },
+            color: Colors.red),
+
+        SwipeAction(
+            widthSpace: 120,
+            title: "popAlert",
+            onTap: (CompletionHandler handler) async {
+              /// false means that you just do nothing,it will close
+              /// action buttons by default
+              handler(false);
+              showCupertinoDialog(
+                  context: context,
+                  builder: (c) {
+                    return CupertinoAlertDialog(
+                      title: Text('ok'),
+                      actions: <Widget>[
+                        CupertinoDialogAction(
+                          child: Text('confirm'),
+                          isDestructiveAction: true,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  });
+            },
+            color: Colors.orange),
+      ],
+      child: GestureDetector(
+        child: Container(
+          margin: EdgeInsets.fromLTRB(0, Util.px(10), 0, 0),
+          padding: EdgeInsets.fromLTRB(Util.px(10), Util.px(10), Util.px(10), 0),
+          color: Colors.white,
+          // decoration: HLViewTool.createDecoration(borderColor: appTheme.borderColor, contentColor: Colors.white, radius: 6, enableShadow: true),
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // 来源
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                          Util.px(5), Util.px(5), 0, Util.px(5)),
+                      child: Text(
+                        "分类：${article.superChapterName}",
+                        style: TextStyle(
+                          decoration: TextDecoration.none,
+                          overflow: TextOverflow.ellipsis,
+                          fontSize: 14,
+                          color: appTheme.subTitleDarkColor,
+                        ),
+                      ),
+                    ),
+                  ),
+                  // 收藏
+                  GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(
+                          Util.px(10), Util.px(5), Util.px(10), Util.px(5)),
+                      height: Util.px(30),
+                      child: Obx(()=> article.collect.value == true ? Image.asset("images/home/list_collect_sel.png")
+                          : Image.asset("images/home/list_collect_nor.png")),
+                    ),
+                    onTap: () {
+                      print("${article.collect}点击收藏");
+                      if (actionBlock != null) {
+                        actionBlock(ArticleAction.collect);
+                      }
+                    },
+                  )
+                ],
+              ),
+              // 内容
+              (article.desc != null ? article.desc! : "").isNotEmpty
+                  ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 标题
+                  Padding(
+                    padding:
+                    EdgeInsets.fromLTRB(Util.px(5), 0, Util.px(10), 0),
+                    child: Text(
+                      "${article.title}",
+                      maxLines: 2,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        fontSize: 16,
+                        color: appTheme.titleColor,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                  // 描述
+                  article.envelopePic!.isNotEmpty ? Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        padding: EdgeInsets.fromLTRB(Util.px(5), 0, 0, 0),
+                        width: Util.px(50),
+                        child: FadeInImage.assetNetwork(
+                            placeholder:
+                            "images/common/img_placeholder.png",
+                            fit: BoxFit.fitWidth,
+                            image: article.envelopePic!),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              Util.px(5), 0, Util.px(10), 0),
+                          child: Text(
+                            "${article.desc}",
+                            maxLines: 2,
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              decoration: TextDecoration.none,
+                              fontSize: 15,
+                              color: appTheme.subTitleColor,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ) :
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(
+                              Util.px(5), 0, Util.px(10), 0),
+                          child: Text(
+                            "${article.desc}",
+                            maxLines: 2,
+                            textAlign: TextAlign.left,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              decoration: TextDecoration.none,
+                              fontSize: 15,
+                              color: appTheme.subTitleColor,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              )
+                  :
+              // 标题
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // 这边要用expand包起来，不然当文字长度过长回报A RenderFlex overflowed by xx pixels on the right.这种错误
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(
+                          Util.px(5), 0, Util.px(10), 0),
+                      child: Text(
+                        "${article.title}",
+                        maxLines: 2,
+                        textAlign: TextAlign.left,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          decoration: TextDecoration.none,
+                          fontSize: 16,
+                          color: appTheme.titleColor,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              // 发布时间、作者
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        Util.px(5), Util.px(15), Util.px(10), Util.px(5)),
+                    child: Text(
+                      article.author!.isNotEmpty
+                          ? "作者:${article.author}"
+                          : "分享者:${article.shareUser}",
+                      style: TextStyle(fontSize: 14, color: Colors.blueAccent),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(
+                        0, Util.px(10), Util.px(10), Util.px(5)),
+                    child: Text(
+                      "${article.niceDate}",
+                      style: TextStyle(
+                          decoration: TextDecoration.none,
+                          fontSize: 14,
+                          color: appTheme.subTitleDarkColor),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+        onTap: () {
+          if (actionBlock != null) {
+            actionBlock(ArticleAction.detail);
+          }
+        },
+      ),
+    );
     return GestureDetector(
       child: Container(
         margin: EdgeInsets.fromLTRB(0, Util.px(10), 0, 0),
