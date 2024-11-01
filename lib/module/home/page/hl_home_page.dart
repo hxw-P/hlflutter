@@ -114,6 +114,7 @@ class _HLHomePageState extends State<HLHomePage>
       {"title": "通知", "image": "images/home/tongzhi.png"},
       {"title": "编辑", "image": "images/home/bianji.png"},
       {"title": "udp", "image": "images/home/bianji.png"},
+      {"title": "tcp", "image": "images/home/bianji.png"},
     ];
     return Scaffold(
       // appBar: HLViewHanlde.appBar("title", appTheme,
@@ -155,8 +156,15 @@ class _HLHomePageState extends State<HLHomePage>
               print('tap pop item');
               if (index == 3) {
                 // udp测试
+                Get.back();
                 Get.toNamed(HLRoutes.udp);
-              } else {
+              }
+              else if (index == 4) {
+                // tcp测试
+                Get.back();
+                Get.toNamed(HLRoutes.tcp);
+              }
+              else {
                 Get.back();
                 HLNativeHandle.exchangeWithNative(
                     "push",
@@ -269,6 +277,7 @@ class _HLHomePageState extends State<HLHomePage>
                           // 进入详情
                           goArticleDetail(i - 1);
                         } else if (action == ArticleAction.collect) {
+                          // 收藏
                           HLClientmethod.collect(articles[i - 1]);
                         }
                       }),

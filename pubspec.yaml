@@ -117,6 +117,7 @@ flutter:
     - images/common/text-field/clear.png
     - images/common/img_placeholder.png
     - images/common/arrow.png
+    - images/common/check.png
     - images/guide/guide_1.png
     - images/guide/guide_2.png
     - images/guide/guide_3.png

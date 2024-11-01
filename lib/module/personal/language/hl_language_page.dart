@@ -24,7 +24,7 @@ class HLLanguagePage extends StatelessWidget {
     return Scaffold(
       appBar: HLViewTool.appBar(HLLocal.languageSetting.tr, appTheme,
           enableBack: true, backAction: () {
-        back();
+            Get.back();
       }),
       backgroundColor: appTheme.backGroundColor,
       body: ListView.builder(
@@ -74,7 +74,4 @@ class HLLanguagePage extends StatelessWidget {
     }
   }
 
-  back() {
-    Get.back();
-  }
 }

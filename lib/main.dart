@@ -4,9 +4,13 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/get_navigation/src/routes/get_route.dart';
+import 'package:hlflutter/device/hl_tcp_page.dart';
+import 'package:hlflutter/device/hl_udp_page.dart';
+// import 'package:hlflutter/device/hl_udp_page.dart';
 import 'package:hlflutter/module/common/hl_web_page.dart';
 import 'package:hlflutter/module/main/hl_tabBar_page.dart';
 import 'package:hlflutter/module/personal/language/hl_language_page.dart';
+import 'package:hlflutter/module/personal/theme/hl_theme_page.dart';
 import 'package:provider/provider.dart';
 import 'package:hlflutter/common/hl_app_theme.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,6 +26,10 @@ import 'module/login/hl_login_page.dart';
 import 'module/personal/collect/hl_collect_page.dart';
 import 'module/personal/hl_personal_page.dart';
 import 'module/personal/set/hl_set_page.dart';
+
+import 'dart:convert';
+import 'dart:io';
+import 'package:flutter/material.dart';
 
 Future<void> main() async {
   final appTheme = AppTheme();
@@ -105,6 +113,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       builder: (context, child) {
+        // 全局初始化加载框
         child = EasyLoading.init()(context, child);
         child = Scaffold(
           // 全局取消键盘
@@ -130,6 +139,9 @@ class MyApp extends StatelessWidget {
         HLRoutes.collect: (context) => const HLCollectPage(),
         HLRoutes.launch: (context) => const HLLaunchPage(),
         HLRoutes.language: (context) => HLLanguagePage(),
+        HLRoutes.udp: (context) => HLUdpPage(),
+        HLRoutes.tcp: (context) => HLTcpPage(),
+        HLRoutes.theme: (context) => HLThemePage(),
       },
       // 多语言配置
       translations: Messages(),
@@ -166,3 +178,5 @@ void loadingConfig() {
 
 class CustomAnimation {
 }
+
+

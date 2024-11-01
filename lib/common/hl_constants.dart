@@ -7,4 +7,6 @@ abstract class HLConstants {
   static const userInfo = 'userInfo';
   // 语言
   static const language = 'language';
+  // 是否深色模式
+  static const isDark = 'isDark';
 }

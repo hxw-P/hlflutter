@@ -19,6 +19,7 @@ import '../../main/hl_tabBar_page.dart';
 class HLSetPage extends StatelessWidget {
   var itemList = [
     {"title": HLLocal.languageSetting.tr},
+    {"title": HLLocal.themeSet.tr},
     {"title": HLLocal.logout.tr},
   ];
 
@@ -50,6 +51,9 @@ class HLSetPage extends StatelessWidget {
     if (index == 0) {
       // 语言设置
       Get.toNamed(HLRoutes.language);
+    } else if (index == 1) {
+      // 主题设置
+      Get.toNamed(HLRoutes.theme);
     } else {
       // 退出登录
       logout(context, appTheme);

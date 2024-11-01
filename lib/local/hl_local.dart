@@ -13,6 +13,10 @@ class HLLocal {
   static const String languageZHHant = 'language_zh_hant';//繁体中文
   static const String languageEN = 'language_en';//英文
   static const String logout = 'logout';//退出登录
+  static const String clickLogin = 'click_login';//点击登录
+  static const String themeSet = 'theme_set';//主题设置
+  static const String lightMode = 'light_mode';//浅色模式
+  static const String darkMode = 'dark_mode';//深色模式
 }
 
 class Messages extends Translations {
@@ -32,6 +36,10 @@ class Messages extends Translations {
       HLLocal.languageZHHant: '繁體中文',
       HLLocal.languageEN: 'English',
       HLLocal.logout: '退出登录',
+      HLLocal.clickLogin: '点击登录',
+      HLLocal.themeSet: '主题设置',
+      HLLocal.lightMode: '浅色模式',
+      HLLocal.darkMode: '深色模式',
     },
     'zh-Hant': {
       HLLocal.home: '主頁',
@@ -46,6 +54,10 @@ class Messages extends Translations {
       HLLocal.languageZHHant: '繁體中文',
       HLLocal.languageEN: 'English',
       HLLocal.logout: '登出',
+      HLLocal.clickLogin: '點擊登入',
+      HLLocal.themeSet: '主題設定',
+      HLLocal.lightMode: '淺色模式',
+      HLLocal.darkMode: '深色模式',
     },
     'en_US': {
       HLLocal.home: 'Home',
@@ -60,6 +72,10 @@ class Messages extends Translations {
       HLLocal.languageZHHant: '繁體中文',
       HLLocal.languageEN: 'English',
       HLLocal.logout: 'Log out',
+      HLLocal.clickLogin: 'Click login',
+      HLLocal.themeSet: 'Theme Settings',
+      HLLocal.lightMode: 'Light color mode',
+      HLLocal.darkMode: 'Dark Mode',
     },
   };
 }

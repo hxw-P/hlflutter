@@ -264,13 +264,13 @@ class Util {
   /// 获取用户信息
   static HLUserEntity getUserInfo() {
     if (prefs!.containsKey(HLConstants.userInfo)) {
-    String jsonStr = prefs!.getString(HLConstants.userInfo) ?? "";
-    HLUserEntity entity =  HLUserEntity().fromMap(json.decode(jsonStr) as Map<String, dynamic>);
+      String jsonStr = prefs!.getString(HLConstants.userInfo)!;
+      HLUserEntity entity =  HLUserEntity().fromMap(json.decode(jsonStr) as Map<String, dynamic>);
       return entity;
     }
     else {
       return HLUserEntity(
-        userName: "请登录",
+        userName: "",
         email: "",
       );
     }
@@ -283,13 +283,20 @@ class Util {
   
   /// 获取语言
   static String getLanguage() {
-    if (prefs!.containsKey(HLConstants.language)) {
-      String language = prefs!.getString(HLConstants.language) ?? "";
-      return language;
-    }
-    else {
-      return "";
-    }
+    String language = prefs!.getString(HLConstants.language) ?? "";
+    return language;
   }
-  
+
+  /// 设置深色模式
+  static setDark(int mode) {
+    prefs!.setInt(HLConstants.isDark, mode);
+  }
+
+  /// 获取显示模式
+  static int getIsDark() {
+    // 默认0，浅色模式
+    int mode = prefs!.getInt(HLConstants.isDark) ?? 0;
+    return mode;
+  }
+
 }

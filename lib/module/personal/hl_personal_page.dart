@@ -37,7 +37,10 @@ class _HLPersonalPageState extends State<HLPersonalPage> with AutomaticKeepAlive
       backgroundColor: appTheme.backGroundColor,
       body: ListView.builder(
         itemBuilder: (c, i) => i == 0
-            ? HLBusinessView.personalHeader(userInfo, appTheme)
+            ? HLBusinessView.personalHeader(userInfo, appTheme, () {
+          // 未登录，跳转登录
+          Get.toNamed(HLRoutes.login);
+        })
             : HLBusinessView.commonRow(
             context,
             appTheme,
